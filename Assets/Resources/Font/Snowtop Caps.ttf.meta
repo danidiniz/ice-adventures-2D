@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 87a64d0541b13634fb07394ffd425190
+timeCreated: 1513828806
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Snowtop Caps
+  fontNames:
+  - Snowtop Caps
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

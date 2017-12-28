@@ -1,0 +1,67 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class IceQuebradoNivel1 : IcesDefault
+{
+    public byte nivelDoIceQuebrado;
+
+    void Start()
+    {
+        isWalkable = true;
+        pararMovimentoDeQuemPassarPorCima = false;
+
+        Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        nivelDoIceQuebrado = 1;
+    }
+
+    public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
+    {
+        base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
+
+        if (Tipo == oQueEstaEmCima)
+            return false;
+
+        Debug.Log(name + " quebrado passou do nível 1 para nível 2");
+
+        switch (oQueEstaEmCima)
+        {
+            case MapCreator.elementosPossiveisNoMapa.PLAYER:
+            case MapCreator.elementosPossiveisNoMapa.PINGUIM:
+            case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
+                break;
+
+            case MapCreator.elementosPossiveisNoMapa.CRATE:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:
+                // Salvando posição atual desse ice para pode acessar apos transformar
+                short i = posI;
+                short j = posJ;
+
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
+                
+                // instanciar crate aqui?
+                
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.CRATE);
+
+                // Atualizando crate nessa posicao para que ela não seja mais empurrada
+                IceCrate temp = MapCreator.map[i, j].GetComponent(typeof(IceCrate)) as IceCrate;
+                if (temp != null)
+                {
+                    //temp.isCrateEmpurravel = false;
+                }
+                
+                break;
+
+            default:
+                Debug.Log("Não encontrei o elemento " + oQueEstaEmCima + " no " + name);
+                break;
+        }
+
+        return true;
+
+    }
+}
