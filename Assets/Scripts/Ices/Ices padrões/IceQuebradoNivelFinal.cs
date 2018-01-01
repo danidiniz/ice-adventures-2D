@@ -15,7 +15,7 @@ public class IceQuebradoNivelFinal : IceQuebradoComCrate
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
-        base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
+        //base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
         if (Tipo == oQueEstaEmCima)
             return false;

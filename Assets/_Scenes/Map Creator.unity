@@ -2395,8 +2395,16 @@ MonoBehaviour:
   end: {fileID: 1760048724725482, guid: 2aabb65e55149dd4ba3145c67574002c, type: 2}
   crate: {fileID: 1472709671604470, guid: 96381f85b97f25a4dbd9932c65a37779, type: 2}
   buraco: {fileID: 1746640635778976, guid: 478242c1dd760d24796d38273e0fc7b5, type: 2}
+  ice_quebrado_1: {fileID: 1667177827034206, guid: eaf15db14fdb15349b6b821ed8663cce,
+    type: 2}
+  ice_quebrado_2: {fileID: 1519331530651210, guid: 16f13908cb32e9741bac495547e5a309,
+    type: 2}
+  ice_quebrado_3: {fileID: 1165998764074440, guid: 1a3f07efd4b032e49be2952569a39fdc,
+    type: 2}
+  ice_quebrado_final: {fileID: 1499485094182878, guid: e753c7a827a13aa4b9bf8c4cd367079c,
+    type: 2}
   linhas: 11
-  colunas: 13
+  colunas: 15
 --- !u!1 &1000953250
 GameObject:
   m_ObjectHideFlags: 0

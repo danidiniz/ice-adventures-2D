@@ -131,6 +131,14 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                 return "Start";
             case MapCreator.elementosPossiveisNoMapa.END:
                 return "End";
+            case MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1:
+                return "Ice 1";
+            case MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2:
+                return "Ice 2";
+            case MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3:
+                return "Ice 3";
+            case MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL:
+                return "Ice final";
             default:
                 return "Elemento não existe [" + posI + "][" + posJ + "]";
         }

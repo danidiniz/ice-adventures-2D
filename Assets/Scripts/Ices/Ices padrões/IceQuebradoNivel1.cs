@@ -5,7 +5,7 @@ using UnityEngine;
 public class IceQuebradoNivel1 : IcesDefault
 {
     public byte nivelDoIceQuebrado;
-
+    
     void Start()
     {
         isWalkable = true;
@@ -22,13 +22,12 @@ public class IceQuebradoNivel1 : IcesDefault
         if (Tipo == oQueEstaEmCima)
             return false;
 
-        Debug.Log(name + " quebrado passou do nível 1 para nível 2");
-
         switch (oQueEstaEmCima)
         {
             case MapCreator.elementosPossiveisNoMapa.PLAYER:
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
+                Debug.Log(name + " quebrado passou do nível 1 para nível 2");
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
                 break;
 
@@ -41,10 +40,13 @@ public class IceQuebradoNivel1 : IcesDefault
                 short i = posI;
                 short j = posJ;
 
-                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
-                
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA);
+
+                //IceQuebradoComCrate temp2 = MapCreator.map[i, j].GetComponent(typeof(IceQuebradoComCrate)) as IceQuebradoComCrate;
+                //temp.nivelDoIceQuebrado = 2;
+
                 // instanciar crate aqui?
-                
+
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.CRATE);
 
                 // Atualizando crate nessa posicao para que ela não seja mais empurrada

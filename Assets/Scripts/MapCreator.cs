@@ -78,6 +78,12 @@ public class MapCreator : MonoBehaviour {
     public GameObject crate;
     public GameObject buraco;
 
+    // TEMPORARIO
+    public GameObject ice_quebrado_1;
+    public GameObject ice_quebrado_2;
+    public GameObject ice_quebrado_3;
+    public GameObject ice_quebrado_final;
+
     [SerializeField]
     private short linhas;
     [SerializeField]
@@ -115,7 +121,6 @@ public class MapCreator : MonoBehaviour {
         iceExtentsY = ice.GetComponent<Renderer>().bounds.extents.y;
 
         CriarMapa();
-        
     }
 
     #region Getters and Setters
@@ -246,6 +251,14 @@ public class MapCreator : MonoBehaviour {
                 return start;
             case elementosPossiveisNoMapa.END:
                 return end;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_1:
+                return ice_quebrado_1;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_2:
+                return ice_quebrado_2;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_3:
+                return ice_quebrado_3;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL:
+                return ice_quebrado_final;
             default:
                 Debug.Log("Class MapCreator, Function InstanciarElemento: elemento não existe");
                 return ice;

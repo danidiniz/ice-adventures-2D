@@ -6,7 +6,8 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
 {
     void Start()
     {
-        pararMovimentoDeQuemPassarPorCima = true;
+        isWalkable = true;
+        pararMovimentoDeQuemPassarPorCima = false;
 
         Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3;
         nivelDoIceQuebrado = 3;
@@ -14,8 +15,6 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
-        base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
-
         if (Tipo == oQueEstaEmCima)
             return false;
 
@@ -24,6 +23,7 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
             case MapCreator.elementosPossiveisNoMapa.PLAYER:
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
+                Debug.Log(name + " quebrado passou do nível 3 para nível final");
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL);
                 // Game over
                 break;
