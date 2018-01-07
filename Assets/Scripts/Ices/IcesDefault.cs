@@ -109,7 +109,15 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                     break;
             }
 
-            SerTransformadoEm(MapCreator.instance.elementoSelecionado);
+            // Não transforma elementos do mesmo tipo
+            if (Tipo != MapCreator.instance.elementoSelecionado)
+            {
+                SerTransformadoEm(MapCreator.instance.elementoSelecionado);
+            }
+            else
+            {
+                Debug.Log("Esse elemento já é um " + GetName());
+            }
         }
         else
         {
@@ -144,6 +152,7 @@ public MapCreator.elementosPossiveisNoMapa Tipo
         }
     }
 
+    /*
     public virtual void SerTransformadoEm(MapCreator.elementosPossiveisNoMapa elemento)
     {
         GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
@@ -179,5 +188,15 @@ public MapCreator.elementosPossiveisNoMapa Tipo
         {
             Debug.Log("Não foi possível transformar o elemento " + GetName() + " em " + novoElementoComponente.GetName());
         }
+    }
+    */
+
+    public virtual void SerTransformadoEm(MapCreator.elementosPossiveisNoMapa elemento)
+    {
+        GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
+
+        PoolManager.instance.ReuseObject(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
+
+        gameObject.SetActive(false);
     }
 }

@@ -43,20 +43,37 @@ public class PoolManager : MonoBehaviour {
         }
     }
 
-    /*
-    public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation)
+    
+    public void ReuseObject(GameObject prefab, Vector2 position, Quaternion rotation, short posI, short posJ)
     {
         int poolKey = prefab.GetInstanceID();
 
         if (poolDictionary.ContainsKey(poolKey))
         {
-            ObjectInstance objectToReuse = poolDictionary[poolKey].Dequeue();
+            IcesDefault objectToReuse = poolDictionary[poolKey].Dequeue();
             poolDictionary[poolKey].Enqueue(objectToReuse);
 
-            objectToReuse.Reuse(position, rotation);
+            objectToReuse.gameObject.transform.position = position;
+            objectToReuse.gameObject.transform.rotation = rotation;
+
+            // Inicio a posição do novo elemento
+            objectToReuse.InitIce(posI, posJ);
+
+            // Setando parent e posição na hierarquia
+            /*
+            novoElemento.transform.parent = MapCreator.instance.mapIcesParent;
+            novoElemento.transform.SetSiblingIndex(posI * MapCreator.instance.Colunas + posJ);
+            // Setando nome
+            novoElemento.name = novoElementoComponente.GetName() + "[" + posI + "][" + posJ + "]";
+            */
+
+            // Atualizando o map[]
+            MapCreator.map[posI, posJ] = objectToReuse;
+
+            objectToReuse.gameObject.SetActive(true);
         }
     }
-    */
+    
 
     /*
     public class ObjectInstance
