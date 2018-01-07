@@ -2448,8 +2448,8 @@ MonoBehaviour:
     type: 2}
   ice_quebrado_final: {fileID: 1499485094182878, guid: e753c7a827a13aa4b9bf8c4cd367079c,
     type: 2}
-  linhas: 25
-  colunas: 25
+  linhas: 5
+  colunas: 5
 --- !u!1 &1000953250
 GameObject:
   m_ObjectHideFlags: 0

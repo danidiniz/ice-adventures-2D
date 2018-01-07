@@ -78,10 +78,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8316414128eed98478d74098c49c605d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posI: 10
-  posJ: 12
+  posI: 0
+  posJ: 0
   tipo: 0
-  nameDoElemento: 
+  nameDoElemento: Ice
   tipoDeIceAntesDeSerTransformado: 0
   isWalkable: 0
   pararMovimentoDeQuemPassarPorCima: 0

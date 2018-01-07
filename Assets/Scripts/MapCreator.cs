@@ -120,10 +120,10 @@ public class MapCreator : MonoBehaviour {
         iceExtentsX = ice.GetComponent<Renderer>().bounds.extents.x;
         iceExtentsY = ice.GetComponent<Renderer>().bounds.extents.y;
 
-        PoolManager.instance.CreatePool(ice, linhas*colunas);
-        PoolManager.instance.CreatePool(crate, linhas * colunas);
+        PoolManager.instance.CreatePool(ice, linhas*colunas*2);
+        PoolManager.instance.CreatePool(crate, linhas * colunas*2);
 
-        //CriarMapa();
+        CriarMapa();
     }
 
     #region Getters and Setters
@@ -154,6 +154,7 @@ public class MapCreator : MonoBehaviour {
     }
     #endregion
 
+    /*
     void CriarMapa()
     {
         // Para centralizar mapa
@@ -192,6 +193,35 @@ public class MapCreator : MonoBehaviour {
         {
             Camera.main.orthographicSize += zoomDaCamera;
             screenPoint = Camera.main.WorldToViewportPoint(map[Linhas/2, 0].gameObject.transform.position);
+            onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        }
+        //Camera.main.orthographicSize = widthToBeSeen * Screen.height / Screen.width * 0.5;
+    }
+    */
+
+    void CriarMapa()
+    {
+        // Para centralizar mapa
+        float linhasSoma = (Linhas % 2 == 0) ? (Linhas / 2 - 1) * iceExtentsY * 2 + iceExtentsY : (Linhas / 2) * iceExtentsY * 2;
+        float colunasSoma = (Colunas % 2 == 0) ? (Colunas / 2 - 1) * iceExtentsX * 2 + iceExtentsX : (Colunas / 2) * iceExtentsX * 2;
+        Vector2 pos = mapIcesParent.position + new Vector3(0.0f, linhasSoma, 0.0f) - new Vector3(colunasSoma, 0.0f, 0.0f);
+
+        for (int i = 0; i < Linhas; i++)
+        {
+            for (int j = 0; j < Colunas; j++)
+            {
+                PoolManager.instance.ReuseObject(ice, new Vector2(pos.x + iceExtentsX * 2 * j, pos.y), Quaternion.identity, (short)i, (short)j);
+            }
+            pos = new Vector2(pos.x, pos.y - iceExtentsY * 2);
+        }
+
+        // Zoom in e Zoom out main camera
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(map[Linhas / 2, 0].gameObject.transform.position);
+        bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        while (!onScreen)
+        {
+            Camera.main.orthographicSize += zoomDaCamera;
+            screenPoint = Camera.main.WorldToViewportPoint(map[Linhas / 2, 0].gameObject.transform.position);
             onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
         }
         //Camera.main.orthographicSize = widthToBeSeen * Screen.height / Screen.width * 0.5;
@@ -268,7 +298,51 @@ public class MapCreator : MonoBehaviour {
         }
     }
 
-    
+
+    /*
+    GameObject RandomIce(Vector2 pos)
+    {
+        GameObject temp;
+        int x;
+        if (numberOfCrates > 0 && count == 4)
+            x = Random.Range(1, 3);
+        else
+        {
+            count++;
+            x = 1;
+        }
+        switch (x)
+        {
+            case 1:
+                temp = Instantiate(ice, pos, Quaternion.identity);
+                temp.name = "Ice";
+                return temp;
+            case 2:
+                temp = Instantiate(crate, pos, Quaternion.identity);
+                temp.name = "Crate";
+                numberOfCrates--;
+                count = 0;
+                return temp;
+            case 3:
+                temp = Instantiate(end, pos, Quaternion.identity);
+                temp.name = "End";
+                return temp;
+            case 4:
+                temp = Instantiate(start, pos, Quaternion.identity);
+                temp.name = "Start";
+                return temp;
+            case 5:
+                temp = Instantiate(buraco, pos, Quaternion.identity);
+                temp.name = "Buraco";
+                return temp;
+            default:
+                temp = Instantiate(ice, pos, Quaternion.identity);
+                temp.name = "Ice";
+                return temp;
+        }
+    }
+    */
+
     GameObject RandomIce(Vector2 pos)
     {
         GameObject temp;
