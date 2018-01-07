@@ -1338,6 +1338,46 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 480114012}
+--- !u!1 &567520972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 567520973}
+  - component: {fileID: 567520974}
+  m_Layer: 0
+  m_Name: Pool Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &567520973
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 567520972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3172853, y: 2.2871077, z: -0.019042969}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &567520974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 567520972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4f2a8a4f038c341939c0e18bb30407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &592507336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,6 +2156,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 212189625099039694, guid: 96381f85b97f25a4dbd9932c65a37779,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114076717420387204, guid: 96381f85b97f25a4dbd9932c65a37779, type: 2}
     - {fileID: 61536196617080422, guid: 96381f85b97f25a4dbd9932c65a37779, type: 2}
@@ -2331,7 +2376,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1992230703315310, guid: 82db1e88cdfd7a84c95fbb9f620dc865, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 212192004057160706, guid: 82db1e88cdfd7a84c95fbb9f620dc865,
         type: 2}
@@ -2403,8 +2448,8 @@ MonoBehaviour:
     type: 2}
   ice_quebrado_final: {fileID: 1499485094182878, guid: e753c7a827a13aa4b9bf8c4cd367079c,
     type: 2}
-  linhas: 11
-  colunas: 15
+  linhas: 25
+  colunas: 25
 --- !u!1 &1000953250
 GameObject:
   m_ObjectHideFlags: 0

@@ -120,7 +120,10 @@ public class MapCreator : MonoBehaviour {
         iceExtentsX = ice.GetComponent<Renderer>().bounds.extents.x;
         iceExtentsY = ice.GetComponent<Renderer>().bounds.extents.y;
 
-        CriarMapa();
+        PoolManager.instance.CreatePool(ice, linhas*colunas);
+        PoolManager.instance.CreatePool(crate, linhas * colunas);
+
+        //CriarMapa();
     }
 
     #region Getters and Setters
