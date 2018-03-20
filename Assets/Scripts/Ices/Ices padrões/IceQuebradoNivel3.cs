@@ -7,7 +7,7 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
     void Start()
     {
         isWalkable = true;
-        pararMovimentoDeQuemPassarPorCima = false;
+        pararMovimentoDeQuemPassarPorCima = true;
 
         Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3;
         nivelDoIceQuebrado = 3;
@@ -24,6 +24,7 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
                 Debug.Log(name + " quebrado passou do nível 3 para nível final");
+                Debug.Log("Game over :(");
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL);
                 // Game over
                 break;

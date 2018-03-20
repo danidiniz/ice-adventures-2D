@@ -31,7 +31,9 @@ public class IceQuebradoNivelFinal : IceQuebradoComCrate
                 break;
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
-                // Vira um IceQuebradoComCrate
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA);
+                IceQuebradoComCrate temp = MapCreator.map[PosI, PosJ].GetComponent(typeof(IceQuebradoComCrate)) as IceQuebradoComCrate;
+                temp.atualizarNivelDoIce(4);
                 break;
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
