@@ -2448,6 +2448,8 @@ MonoBehaviour:
     type: 2}
   ice_quebrado_final: {fileID: 1499485094182878, guid: e753c7a827a13aa4b9bf8c4cd367079c,
     type: 2}
+  ice_quebrado_com_crate: {fileID: 1932612960585920, guid: d722a15cac05e5d4d8451a0ca3c0efde,
+    type: 2}
   linhas: 5
   colunas: 5
 --- !u!1 &1000953250

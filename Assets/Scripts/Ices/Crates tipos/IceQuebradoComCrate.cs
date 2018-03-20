@@ -14,9 +14,6 @@ public class IceQuebradoComCrate : IceCrate
 
     void Start()
     {
-        isWalkable = false;
-        pararMovimentoDeQuemPassarPorCima = true;
-
         Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA;
         if(nivelDoIceQuebrado != 1 && nivelDoIceQuebrado != 2 && nivelDoIceQuebrado != 3)
         {
@@ -26,6 +23,7 @@ public class IceQuebradoComCrate : IceCrate
         {
             Debug.Log("Componente da crate em cima do ice NULL");
         }
+        
     }
 
     public void InitIceQuebrado(short _i, short _j, byte nivel, IceCrate crate)
@@ -73,6 +71,7 @@ public class IceQuebradoComCrate : IceCrate
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:
+                /*
                 // Salvando posição atual desse ice para pode acessar apos transformar
                 short i = posI;
                 short j = posJ;
@@ -89,7 +88,7 @@ public class IceQuebradoComCrate : IceCrate
                 {
                     //temp.isCrateEmpurravel = false;
                 }
-                
+                */
                 break;
 
             default:
@@ -101,5 +100,19 @@ public class IceQuebradoComCrate : IceCrate
 
     }
 
-
+    public void atualizarNivelDoIce(byte nivel)
+    {
+        nivelDoIceQuebrado = nivel;
+        if (nivelDoIceQuebrado >= 3)
+        {
+            isWalkable = true;
+            pararMovimentoDeQuemPassarPorCima = false;
+        }
+        else
+        {
+            isWalkable = false;
+            pararMovimentoDeQuemPassarPorCima = true;
+        }
+    }
+    
 }

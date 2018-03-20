@@ -83,6 +83,7 @@ public class MapCreator : MonoBehaviour {
     public GameObject ice_quebrado_2;
     public GameObject ice_quebrado_3;
     public GameObject ice_quebrado_final;
+    public GameObject ice_quebrado_com_crate;
 
     [SerializeField]
     private short linhas;
@@ -120,8 +121,15 @@ public class MapCreator : MonoBehaviour {
         iceExtentsX = ice.GetComponent<Renderer>().bounds.extents.x;
         iceExtentsY = ice.GetComponent<Renderer>().bounds.extents.y;
 
-        PoolManager.instance.CreatePool(ice, linhas*colunas*2);
-        PoolManager.instance.CreatePool(crate, linhas * colunas*2);
+        PoolManager.instance.CreatePool(ice, linhas* colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_1, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_2, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_com_crate, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(crate, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(start, 2);
+        PoolManager.instance.CreatePool(end, 2);
 
         CriarMapa();
     }
@@ -292,6 +300,8 @@ public class MapCreator : MonoBehaviour {
                 return ice_quebrado_3;
             case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL:
                 return ice_quebrado_final;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA:
+                return ice_quebrado_com_crate;
             default:
                 Debug.Log("Class MapCreator, Function InstanciarElemento: elemento não existe");
                 return ice;

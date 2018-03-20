@@ -85,6 +85,13 @@ public MapCreator.elementosPossiveisNoMapa Tipo
 
         if (MapCreator.instance.modoCriarMapaAtivado)
         {
+            // Não transforma elementos do mesmo tipo
+            if (Tipo == MapCreator.instance.elementoSelecionado)
+            {
+                Debug.Log("Esse elemento já é um " + GetName());
+                return;
+            }
+
             // Verificando se o elemento selecionado é o Start ou End
             // se for, só posso ter 1 deles no mapa,
             // então verifico se já existe algum no mapa e deleto se houve
@@ -108,15 +115,10 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                     GameController.instance.posicaoDoEnd.j = PosJ;
                     break;
             }
-
-            // Não transforma elementos do mesmo tipo
+            
             if (Tipo != MapCreator.instance.elementoSelecionado)
             {
                 SerTransformadoEm(MapCreator.instance.elementoSelecionado);
-            }
-            else
-            {
-                Debug.Log("Esse elemento já é um " + GetName());
             }
         }
         else
