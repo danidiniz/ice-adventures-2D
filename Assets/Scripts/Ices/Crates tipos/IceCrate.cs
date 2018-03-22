@@ -239,13 +239,17 @@ public class IceCrate : IcesDefault
         {
             bool crateFoiEmpurrada = false;
 
+            // Retiro o que está em cima desse Ice
+            MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = null;
+
             // Player à cima da Crate
             if (quemEstaEmpurrandoInfo.PosI < posI)
             {
                 // Verifica se pra onde a Crate vai ser empurrada está dentro do map
                 if (MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(posI + 1), posJ))
                 {
-                    crateFoiEmpurrada = MapCreator.map[posI + 1, posJ].AlgoPassouPorAqui(Tipo, this);
+                    //crateFoiEmpurrada = MapCreator.map[posI + 1, posJ].AlgoPassouPorAqui(Tipo, this);
+                    MapCreator.map[posI + 1, posJ].ColocarEmCimaDoIce(this);
                 }
             }
             // Player à direita da Crate
@@ -253,8 +257,10 @@ public class IceCrate : IcesDefault
             {
                 if (MapCreator.instance.VerificarSeEstaDentroDoMapa(posI, (short)(posJ - 1)))
                 {
-                    crateFoiEmpurrada = MapCreator.map[posI, posJ - 1].AlgoPassouPorAqui(Tipo, this);
+                    //crateFoiEmpurrada = MapCreator.map[posI, posJ - 1].AlgoPassouPorAqui(Tipo, this);
+                    MapCreator.map[posI, posJ - 1].ColocarEmCimaDoIce(this);
                 }
+
             }
             // Player embaixo da Crate
             else if (quemEstaEmpurrandoInfo.PosI > posI)
@@ -262,7 +268,8 @@ public class IceCrate : IcesDefault
                 // Verifica se pra onde a Crate vai ser empurrada está dentro do map
                 if (MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(posI - 1), posJ))
                 {
-                    crateFoiEmpurrada = MapCreator.map[posI - 1, posJ].AlgoPassouPorAqui(Tipo, this);
+                    //crateFoiEmpurrada = MapCreator.map[posI - 1, posJ].AlgoPassouPorAqui(Tipo, this);
+                    MapCreator.map[posI - 1, posJ].ColocarEmCimaDoIce(this);
                 }
             }
             // Player à esquerda da Crate
@@ -270,10 +277,12 @@ public class IceCrate : IcesDefault
             {
                 if (MapCreator.instance.VerificarSeEstaDentroDoMapa(posI, (short)(posJ + 1)))
                 {
-                    crateFoiEmpurrada = MapCreator.map[posI, posJ + 1].AlgoPassouPorAqui(Tipo, this);
+                    //crateFoiEmpurrada = MapCreator.map[posI, posJ + 1].AlgoPassouPorAqui(Tipo, this);
+                    MapCreator.map[posI, posJ + 1].ColocarEmCimaDoIce(this);
                 }
             }
 
+            /*
             // Se a crate foi empurrada com sucesso, transformo esse ice no que ele era antes de virar crate
             if (crateFoiEmpurrada)
             {
@@ -308,9 +317,9 @@ public class IceCrate : IcesDefault
                         SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE);
                         break;
                 }
-
-                
             }
+            */
+        
         }
 
         // DELETAR

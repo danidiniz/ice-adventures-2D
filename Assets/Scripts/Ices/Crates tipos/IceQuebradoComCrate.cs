@@ -14,7 +14,7 @@ public class IceQuebradoComCrate : IceCrate
 
     void Start()
     {
-        Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA;
+        //Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA;
         if(nivelDoIceQuebrado != 1 && nivelDoIceQuebrado != 2 && nivelDoIceQuebrado != 3)
         {
             Debug.Log("Nivel do ice não foi inicializado");

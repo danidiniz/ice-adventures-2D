@@ -28,6 +28,7 @@ public class Ice : IcesDefault
         if (Tipo == elementoEmCimaDoIce.Tipo)
             return false;
 
+        /*
         if (elementoEmCimaDoIce.Tipo == MapCreator.elementosPossiveisNoMapa.CRATE)
         {
             IceCrate componenteDaCrateQueFoiEmpurrada = elementoEmCimaDoIce.GetComponent(typeof(IceCrate)) as IceCrate;
@@ -48,6 +49,7 @@ public class Ice : IcesDefault
             
             return true;
         }
+        */
 
         return true;
     }

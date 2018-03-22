@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceQuebradoNivelFinal : IcesDefault
-{
+public class IceQuebradoNivelFinalCrate : IcesDefault {
+
     void Start()
     {
         isWalkable = true;
-        pararMovimentoDeQuemPassarPorCima = true;
+        pararMovimentoDeQuemPassarPorCima = false;
 
         Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL;
     }
@@ -22,7 +22,6 @@ public class IceQuebradoNivelFinal : IcesDefault
         switch (oQueEstaEmCima)
         {
             case MapCreator.elementosPossiveisNoMapa.PLAYER:
-                Debug.Log("Game over!");
                 break;
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
@@ -30,7 +29,6 @@ public class IceQuebradoNivelFinal : IcesDefault
                 break;
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
-                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL_CRATE);
                 break;
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:

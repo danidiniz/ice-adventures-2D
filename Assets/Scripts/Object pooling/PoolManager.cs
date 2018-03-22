@@ -70,6 +70,38 @@ public class PoolManager : MonoBehaviour {
             // Atualizando o map[]
             MapCreator.map[posI, posJ] = objectToReuse;
 
+            MapCreator.map[posI, posJ].elementoEmCimaDoIce = null;
+
+            objectToReuse.gameObject.SetActive(true);
+        }
+    }
+
+    public void ReuseObjectEmCima(GameObject prefab, Vector2 position, Quaternion rotation, short posI, short posJ)
+    {
+        int poolKey = prefab.GetInstanceID();
+
+        if (poolDictionary.ContainsKey(poolKey))
+        {
+            IcesDefault objectToReuse = poolDictionary[poolKey].Dequeue();
+            poolDictionary[poolKey].Enqueue(objectToReuse);
+
+            objectToReuse.gameObject.transform.position = position;
+            objectToReuse.gameObject.transform.rotation = rotation;
+
+            // Inicio a posição do novo elemento
+            objectToReuse.InitIce(posI, posJ);
+
+            // Setando parent e posição na hierarquia
+            /*
+            novoElemento.transform.parent = MapCreator.instance.mapIcesParent;
+            novoElemento.transform.SetSiblingIndex(posI * MapCreator.instance.Colunas + posJ);
+            // Setando nome
+            novoElemento.name = novoElementoComponente.GetName() + "[" + posI + "][" + posJ + "]";
+            */
+
+            // Atualizando o que está em cima do ice
+            MapCreator.map[posI, posJ].elementoEmCimaDoIce = objectToReuse;
+
             objectToReuse.gameObject.SetActive(true);
         }
     }
@@ -116,5 +148,5 @@ public class PoolManager : MonoBehaviour {
         }
     }
     */
-
+    
 }

@@ -51,7 +51,7 @@ public class MapCreator : MonoBehaviour {
 
     public enum elementosPossiveisNoMapa {
         // Tipos de ice
-        ICE, ICE_QUEBRADO_1, ICE_QUEBRADO_2, ICE_QUEBRADO_3, ICE_QUEBRADO_FINAL, ICE_QUEBRADO_COM_CRATE_EM_CIMA, BURACO, IGLU, START, END,
+        ICE, ICE_QUEBRADO_1, ICE_QUEBRADO_2, ICE_QUEBRADO_3, ICE_QUEBRADO_FINAL, ICE_QUEBRADO_FINAL_CRATE, BURACO, IGLU, START, END,
         // Tipos de crate
         CRATE, CRATE_COM_PINGUIM_1, CRATE_COM_PINGUIM_2, CRATE_COM_PINGUIM_3, CRATE_COM_PINGUIM_4,
         // Tipos de especial
@@ -83,7 +83,7 @@ public class MapCreator : MonoBehaviour {
     public GameObject ice_quebrado_2;
     public GameObject ice_quebrado_3;
     public GameObject ice_quebrado_final;
-    public GameObject ice_quebrado_com_crate;
+    public GameObject ice_quebrado_final_crate;
 
     [SerializeField]
     private short linhas;
@@ -126,7 +126,7 @@ public class MapCreator : MonoBehaviour {
         PoolManager.instance.CreatePool(ice_quebrado_2, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_com_crate, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_final_crate, linhas * colunas + 1);
         PoolManager.instance.CreatePool(crate, linhas * colunas + 1);
         PoolManager.instance.CreatePool(start, 2);
         PoolManager.instance.CreatePool(end, 2);
@@ -300,8 +300,8 @@ public class MapCreator : MonoBehaviour {
                 return ice_quebrado_3;
             case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL:
                 return ice_quebrado_final;
-            case elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA:
-                return ice_quebrado_com_crate;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL_CRATE:
+                return ice_quebrado_final_crate;
             default:
                 Debug.Log("Class MapCreator, Function InstanciarElemento: elemento não existe");
                 return ice;

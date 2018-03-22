@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,6 +37,8 @@ private tiposDeIce tipo;
         START, END,
         ONDA_DA_ORCA, URSO_POLAR,
     };
+
+    public IcesDefault elementoEmCimaDoIce;
 
     //[SerializeField]
     //private MapCreator.elementosPossiveisNoMapa tipo;
@@ -118,13 +121,31 @@ public MapCreator.elementosPossiveisNoMapa Tipo
             
             if (Tipo != MapCreator.instance.elementoSelecionado)
             {
-                SerTransformadoEm(MapCreator.instance.elementoSelecionado);
+                if (isCrateEtc())
+                {
+                    GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(MapCreator.instance.elementoSelecionado);
+
+                    PoolManager.instance.ReuseObjectEmCima(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
+                }
+                else
+                {
+                    SerTransformadoEm(MapCreator.instance.elementoSelecionado);
+                }
             }
         }
         else
         {
 //            Debug.Log("Cliquei no " + name);
         }
+    }
+
+    private bool isCrateEtc()
+    {
+        if(MapCreator.instance.elementoSelecionado == MapCreator.elementosPossiveisNoMapa.CRATE)
+        {
+            return true;
+        }
+        return false;
     }
 
     protected string GetName()
@@ -199,6 +220,27 @@ public MapCreator.elementosPossiveisNoMapa Tipo
 
         PoolManager.instance.ReuseObject(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
 
+        elementoEmCimaDoIce = null;
+
         gameObject.SetActive(false);
+    }
+
+    // Apenas coloca um elemento que já existe em cima desse ice
+    // No PollManager o ReuseObjectEmCima 'deleta' e cria um elemento novo.. (usando na opção map creator)
+    public virtual void ColocarEmCimaDoIce(IcesDefault elemento)
+    {
+        elementoEmCimaDoIce = elemento;
+
+        elemento.transform.position = transform.position;
+
+        // Atualizo a posição do elemento
+        elemento.InitIce(posI, posJ);
+        
+        AlgoPassouPorAqui(elemento.Tipo, elemento);
+
+        //GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
+
+        //PoolManager.instance.ColocarEmCima(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
+        
     }
 }
