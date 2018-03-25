@@ -5,11 +5,11 @@ using UnityEngine.EventSystems;
 
 public class Ice : IcesDefault
 {
-    void Start()
+    void Awake()
     {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
-        Tipo = MapCreator.elementosPossiveisNoMapa.ICE;
+        Elemento = MapCreator.elementosPossiveisNoMapa.ICE;
     }
 
     public override void OnMouseDown()
@@ -25,7 +25,7 @@ public class Ice : IcesDefault
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Tipo == elementoEmCimaDoIce.Tipo)
+        if (Elemento == elementoEmCimaDoIce.Elemento)
             return false;
 
         /*

@@ -12,12 +12,12 @@ public class IceBuraco : IcesDefault
 
     private SpriteRenderer spriteDoBuraco;
 
-    void Start()
+    void Awake()
     {
         // TEMPORARIO
         posicaoDoOutroBuracoI = (short)(Random.Range(1, MapCreator.instance.Linhas));
         posicaoDoOutroBuracoJ = (short)(Random.Range(1, MapCreator.instance.Colunas));
-        if(MapCreator.map[posicaoDoOutroBuracoI, posicaoDoOutroBuracoJ].Tipo != MapCreator.elementosPossiveisNoMapa.BURACO)
+        if(MapCreator.map[posicaoDoOutroBuracoI, posicaoDoOutroBuracoJ].Elemento != MapCreator.elementosPossiveisNoMapa.BURACO)
         {
             MapCreator.map[posicaoDoOutroBuracoI, posicaoDoOutroBuracoJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.BURACO);
         }
@@ -25,7 +25,7 @@ public class IceBuraco : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
-        Tipo = MapCreator.elementosPossiveisNoMapa.BURACO;
+        Elemento = MapCreator.elementosPossiveisNoMapa.BURACO;
 
         spriteDoBuraco = GetComponent<SpriteRenderer>();
     }
@@ -34,7 +34,7 @@ public class IceBuraco : IcesDefault
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Tipo == oQueEstaEmCima)
+        if (Elemento == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)
@@ -50,7 +50,7 @@ public class IceBuraco : IcesDefault
     void Teleportar(ElementoDoMapa elemento)
     {
         // Verificar se o outro lado está vazio (pode ter uma Crate em cima, por exemplo)
-        if(MapCreator.map[posicaoDoOutroBuracoI, posicaoDoOutroBuracoJ].Tipo == MapCreator.elementosPossiveisNoMapa.CRATE)
+        if(MapCreator.map[posicaoDoOutroBuracoI, posicaoDoOutroBuracoJ].Elemento == MapCreator.elementosPossiveisNoMapa.CRATE)
         {
             Debug.Log("Não foi possível teleportar pois há uma Crate do outro lado.");
         }

@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class IceQuebradoNivelFinalCrate : IcesDefault {
 
-    void Start()
+    void Awake()
     {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
 
-        Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL;
+        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL_CRATE;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
         //base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Tipo == oQueEstaEmCima)
+        if (Elemento == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)
@@ -30,7 +30,7 @@ public class IceQuebradoNivelFinalCrate : IcesDefault {
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
                 break;
-            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:

@@ -7,12 +7,16 @@ using UnityEngine.UI;
 public class GUIElementsOnClick : MonoBehaviour, IPointerDownHandler {
 
     [SerializeField]
-    private MapCreator.elementosPossiveisNoMapa tipo;
+    private MapCreator.elementosPossiveisNoMapa elemento;
+    [SerializeField]
+    private MapCreator.tipoDeElemento tipo;
 
     public void AlterarElementoSelecionado()
     {
-        MapCreator.instance.elementoSelecionado = tipo;
+        MapCreator.instance.elementoSelecionado = elemento;
+        MapCreator.instance.tipoDoElementoSelecionado = tipo;
         MapCreatorGUIManager.instance.objetoSelecionado.sprite = this.GetComponent<Image>().sprite;
+        MapCreatorGUIManager.instance.objetoSelecionado.GetComponent<Image>().color = this.GetComponent<Image>().color;
     }
 
     public void OnPointerDown(PointerEventData eventData)

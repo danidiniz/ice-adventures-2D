@@ -11,22 +11,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
     //Todo ice tem uma posição i,j
     // Todo ice tem um sprite?
     // Todo ice tem um método "collider" pra quando o player estiver em cima
-
-    /*
-protected enum tiposDeIce { ICE, CRATE, BURACO, START, END };
-[SerializeField]
-private tiposDeIce tipo;
-*/
-
-
-    // Variavel para saber o que o ice era antes de ser transformado
-    // Por exemplo se ele é um IceQuebradoComCrate e alguem quebra essa Crate,
-    // como eu saberia o que ela era antes de ser um IceQuebradoComCrate?
-    // Dessa forma facilita
-    public MapCreator.elementosPossiveisNoMapa tipoDeIceAntesDeSerTransformado;
-
-    public bool isWalkable;
-    public bool pararMovimentoDeQuemPassarPorCima;
+    
 
     public enum coisasQuePodemEstarEmCimaDoIce
     {
@@ -38,43 +23,17 @@ private tiposDeIce tipo;
         ONDA_DA_ORCA, URSO_POLAR,
     };
 
-    public IcesDefault elementoEmCimaDoIce;
+    public ObjetoDoMapa elementoEmCimaDoIce;
 
-    //[SerializeField]
-    //private MapCreator.elementosPossiveisNoMapa tipo;
-
-    //[SerializeField]
-    //protected short posI;
-    //[SerializeField]
-    //protected short posJ;
-
-    /*
-public MapCreator.elementosPossiveisNoMapa Tipo
-{
-    get
+    void Awake()
     {
-        return tipo;
+        TipoDoElemento = MapCreator.tipoDeElemento.ICE;
     }
-
-    set
-    {
-        tipo = value;
-    }
-}
-*/
-
-    public void InitIce(short _i, short _j)
-    {
-        posI = _i;
-        posJ = _j;
-    }
-    
-
 
     public virtual bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
         //Debug.Log(elementoEmCimaDoIce.name + "["+PosI+"]["+PosJ+"]");
-        if (Tipo == oQueEstaEmCima)
+        if (Elemento == oQueEstaEmCima)
             return false;
         return true;
     }
@@ -89,7 +48,7 @@ public MapCreator.elementosPossiveisNoMapa Tipo
         if (MapCreator.instance.modoCriarMapaAtivado)
         {
             // Não transforma elementos do mesmo tipo
-            if (Tipo == MapCreator.instance.elementoSelecionado)
+            if (Elemento == MapCreator.instance.elementoSelecionado)
             {
                 Debug.Log("Esse elemento já é um " + GetName());
                 return;
@@ -102,7 +61,7 @@ public MapCreator.elementosPossiveisNoMapa Tipo
             switch (MapCreator.instance.elementoSelecionado)
             {
                 case MapCreator.elementosPossiveisNoMapa.START:
-                    if(MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].Tipo == MapCreator.elementosPossiveisNoMapa.START)
+                    if(MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].Elemento == MapCreator.elementosPossiveisNoMapa.START)
                     {
                         MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE);
                     }
@@ -110,7 +69,7 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                     GameController.instance.posicaoDoStart.j = PosJ;
                     break;
                 case MapCreator.elementosPossiveisNoMapa.END:
-                    if (MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].Tipo == MapCreator.elementosPossiveisNoMapa.END)
+                    if (MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].Elemento == MapCreator.elementosPossiveisNoMapa.END)
                     {
                         MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE);
                     }
@@ -119,9 +78,9 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                     break;
             }
             
-            if (Tipo != MapCreator.instance.elementoSelecionado)
+            if (Elemento != MapCreator.instance.elementoSelecionado)
             {
-                if (isCrateEtc())
+                if (MapCreator.instance.tipoDoElementoSelecionado == MapCreator.tipoDeElemento.OBJETO)
                 {
                     GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(MapCreator.instance.elementoSelecionado);
 
@@ -129,6 +88,11 @@ public MapCreator.elementosPossiveisNoMapa Tipo
                 }
                 else
                 {
+                    if (elementoEmCimaDoIce != null)
+                    {
+                        elementoEmCimaDoIce.gameObject.SetActive(false);
+                        elementoEmCimaDoIce = null;
+                    }
                     SerTransformadoEm(MapCreator.instance.elementoSelecionado);
                 }
             }
@@ -139,18 +103,9 @@ public MapCreator.elementosPossiveisNoMapa Tipo
         }
     }
 
-    private bool isCrateEtc()
-    {
-        if(MapCreator.instance.elementoSelecionado == MapCreator.elementosPossiveisNoMapa.CRATE)
-        {
-            return true;
-        }
-        return false;
-    }
-
     protected string GetName()
     {
-        switch (Tipo)
+        switch (Elemento)
         {
             case MapCreator.elementosPossiveisNoMapa.ICE:
                 return "Ice";
@@ -175,72 +130,35 @@ public MapCreator.elementosPossiveisNoMapa Tipo
         }
     }
 
-    /*
-    public virtual void SerTransformadoEm(MapCreator.elementosPossiveisNoMapa elemento)
-    {
-        GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
-        IcesDefault novoElementoComponente = prefabDoElemento.GetComponent(typeof(IcesDefault)) as IcesDefault;
-        // Transforma esse elemento apenas se forem de tipos diferentes
-        if (Tipo != novoElementoComponente.Tipo)
-        {
-            // Instancio o elemento
-            GameObject novoElemento = Instantiate(prefabDoElemento, transform.position, Quaternion.identity) as GameObject;
-
-            // Pegando componente desse novoElemento para incializá-lo
-            novoElementoComponente = novoElemento.GetComponent(typeof(IcesDefault)) as IcesDefault;
-
-            // Inicio a posição do novo elemento com a posição desse elemento que está sendo transformado
-            novoElementoComponente.InitIce(posI, posJ);
-
-            // Setando parent e posição na hierarquia
-            novoElemento.transform.parent = MapCreator.instance.mapIcesParent;
-            novoElemento.transform.SetSiblingIndex(posI * MapCreator.instance.Colunas + posJ);
-            // Setando nome
-            novoElemento.name = novoElementoComponente.GetName() + "[" + posI + "][" + posJ + "]";
-
-            // Atualizando o map[]
-            MapCreator.map[posI, posJ] = novoElementoComponente;
-
-            MapCreator.map[posI, posJ].tipoDeIceAntesDeSerTransformado = Tipo;
-
-//            Debug.Log("Destruí o " + name + " e criei um " + novoElemento.name);
-
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Debug.Log("Não foi possível transformar o elemento " + GetName() + " em " + novoElementoComponente.GetName());
-        }
-    }
-    */
-
     public virtual void SerTransformadoEm(MapCreator.elementosPossiveisNoMapa elemento)
     {
         GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
 
         PoolManager.instance.ReuseObject(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
-
-        elementoEmCimaDoIce = null;
-
+        
         gameObject.SetActive(false);
     }
 
     // Apenas coloca um elemento que já existe em cima desse ice
     // No PollManager o ReuseObjectEmCima 'deleta' e cria um elemento novo.. (usando na opção map creator)
-    public virtual void ColocarEmCimaDoIce(IcesDefault elemento)
+    public virtual void ColocarEmCimaDoIce(ObjetoDoMapa elemento)
     {
         elementoEmCimaDoIce = elemento;
 
         elemento.transform.position = transform.position;
-
-        // Atualizo a posição do elemento
-        elemento.InitIce(posI, posJ);
         
-        AlgoPassouPorAqui(elemento.Tipo, elemento);
+        AlgoPassouPorAqui(elemento.Elemento, elemento);
 
         //GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
 
         //PoolManager.instance.ColocarEmCima(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
         
+    }
+
+    public virtual bool temAlgoEmCima()
+    {
+        if (elementoEmCimaDoIce != null)
+            return true;
+        return false;
     }
 }

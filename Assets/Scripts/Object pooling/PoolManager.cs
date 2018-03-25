@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour {
     
-    Dictionary<int, Queue<IcesDefault>> poolDictionary = new Dictionary<int, Queue<IcesDefault>>();
+    Dictionary<int, Queue<ElementoDoMapa>> poolDictionary = new Dictionary<int, Queue<ElementoDoMapa>>();
 
     static PoolManager _instance;
 
@@ -26,7 +26,7 @@ public class PoolManager : MonoBehaviour {
 
         if (!poolDictionary.ContainsKey(poolKey))
         {
-            poolDictionary.Add(poolKey, new Queue<IcesDefault>());
+            poolDictionary.Add(poolKey, new Queue<ElementoDoMapa>());
 
             GameObject poolHolder = new GameObject(prefab.name + " pool");
             poolHolder.transform.parent = transform;
@@ -35,7 +35,7 @@ public class PoolManager : MonoBehaviour {
             {
                 GameObject temp = Instantiate(prefab) as GameObject;
                 temp.SetActive(false);
-                IcesDefault newIce = temp.GetComponent(typeof(IcesDefault)) as IcesDefault;
+                ElementoDoMapa newIce = temp.GetComponent(typeof(ElementoDoMapa)) as ElementoDoMapa;
                 
                 poolDictionary[poolKey].Enqueue(newIce);
                 newIce.gameObject.transform.SetParent(poolHolder.transform);
@@ -50,14 +50,14 @@ public class PoolManager : MonoBehaviour {
 
         if (poolDictionary.ContainsKey(poolKey))
         {
-            IcesDefault objectToReuse = poolDictionary[poolKey].Dequeue();
+            ElementoDoMapa objectToReuse = poolDictionary[poolKey].Dequeue();
             poolDictionary[poolKey].Enqueue(objectToReuse);
 
             objectToReuse.gameObject.transform.position = position;
             objectToReuse.gameObject.transform.rotation = rotation;
 
             // Inicio a posição do novo elemento
-            objectToReuse.InitIce(posI, posJ);
+            objectToReuse.setPosition(posI, posJ);
 
             // Setando parent e posição na hierarquia
             /*
@@ -68,7 +68,7 @@ public class PoolManager : MonoBehaviour {
             */
 
             // Atualizando o map[]
-            MapCreator.map[posI, posJ] = objectToReuse;
+            MapCreator.map[posI, posJ] = (IcesDefault)objectToReuse;
 
             MapCreator.map[posI, posJ].elementoEmCimaDoIce = null;
 
@@ -82,14 +82,14 @@ public class PoolManager : MonoBehaviour {
 
         if (poolDictionary.ContainsKey(poolKey))
         {
-            IcesDefault objectToReuse = poolDictionary[poolKey].Dequeue();
+            ElementoDoMapa objectToReuse = poolDictionary[poolKey].Dequeue();
             poolDictionary[poolKey].Enqueue(objectToReuse);
 
             objectToReuse.gameObject.transform.position = position;
             objectToReuse.gameObject.transform.rotation = rotation;
 
             // Inicio a posição do novo elemento
-            objectToReuse.InitIce(posI, posJ);
+            objectToReuse.setPosition(posI, posJ);
 
             // Setando parent e posição na hierarquia
             /*
@@ -100,7 +100,7 @@ public class PoolManager : MonoBehaviour {
             */
 
             // Atualizando o que está em cima do ice
-            MapCreator.map[posI, posJ].elementoEmCimaDoIce = objectToReuse;
+            MapCreator.map[posI, posJ].elementoEmCimaDoIce = (ObjetoDoMapa)objectToReuse;
 
             objectToReuse.gameObject.SetActive(true);
         }

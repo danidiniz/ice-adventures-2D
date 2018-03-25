@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class IceQuebradoNivel2 : IceQuebradoNivel1
 {
-    void Start()
+    void Awake()
     {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
-        Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
+        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
         nivelDoIceQuebrado = 2;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
-        if (Tipo == oQueEstaEmCima)
+        if (Elemento == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)
@@ -27,7 +27,7 @@ public class IceQuebradoNivel2 : IceQuebradoNivel1
                 break;
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
-            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:

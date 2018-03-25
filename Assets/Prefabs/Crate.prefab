@@ -78,19 +78,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083dcdf418996cb4a8eb76b9838f29f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posI: 10
-  posJ: 8
-  tipo: 10
-  nameDoElemento: 
-  tipoDeIceAntesDeSerTransformado: 0
   isWalkable: 0
   pararMovimentoDeQuemPassarPorCima: 0
-  elementoEmCimaDoIce: {fileID: 0}
-  isCrateComum: 0
-  isCrateQuebravel: 0
-  isCratePulavel: 0
-  isCrateEmpurravel: 0
-  quantidadeDeVezesQueACratePodeSerEmpurrada: 0
+  posI: 10
+  posJ: 8
+  elemento: 10
+  tipoDoElemento: 1
+  nameDoElemento: 
+  isComum: 0
+  isQuebravel: 0
+  isPulavel: 0
+  isEmpurravel: 0
+  quantidadeDeVezesQuePodeSerEmpurrada: 0
   elementoDentroDaCaixa: 0
 --- !u!212 &212189625099039694
 SpriteRenderer:

@@ -36,7 +36,6 @@ public class MapCreatorGUIManager : MonoBehaviour
     public bool isSelecionandoBuraco;
     #endregion
 
-
     public GameObject elementosPossiveisNoMapaPanel;
 
     public Image objetoSelecionado;
