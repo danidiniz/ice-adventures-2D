@@ -239,7 +239,21 @@ public class PlayerMovementAgrVai : MonoBehaviour
         {
             if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].isWalkable)
             {
-                return true;
+                if(MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    if(MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.isWalkable)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
         }
         return false;

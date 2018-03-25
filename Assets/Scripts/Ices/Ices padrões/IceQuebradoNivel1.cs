@@ -6,12 +6,12 @@ public class IceQuebradoNivel1 : IcesDefault
 {
     public byte nivelDoIceQuebrado;
     
-    void Start()
+    void Awake()
     {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
 
-        Tipo = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
         nivelDoIceQuebrado = 1;
     }
 
@@ -19,7 +19,7 @@ public class IceQuebradoNivel1 : IcesDefault
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Tipo == oQueEstaEmCima)
+        if (Elemento == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)
@@ -32,11 +32,18 @@ public class IceQuebradoNivel1 : IcesDefault
                 break;
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
-            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_1:
+            case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:
+                // Gambiarra? Pensar pra ajeitar isso
+                // problema: quando eu empurro a caixa pra cima do Ice 1, eu coloco ela em cima dele antes de transforma-lo,
+                // então ao transformá-lo em Ice 2, a caixa 'some' 
+                IceCrate temp = MapCreator.map[PosI, PosJ].elementoEmCimaDoIce.GetComponent(typeof(IceCrate)) as IceCrate;
+                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
+                MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = temp;
 
+                /*
                 tipoDeIceAntesDeSerTransformado = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
 
                 // Salvando posição atual desse ice para pode acessar apos transformar

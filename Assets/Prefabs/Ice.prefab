@@ -78,13 +78,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8316414128eed98478d74098c49c605d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posI: 0
-  posJ: 0
-  tipo: 0
-  nameDoElemento: Ice
-  tipoDeIceAntesDeSerTransformado: 0
   isWalkable: 0
   pararMovimentoDeQuemPassarPorCima: 0
+  posI: 0
+  posJ: 0
+  elemento: 0
+  tipoDoElemento: 0
+  nameDoElemento: Ice
+  elementoEmCimaDoIce: {fileID: 0}
 --- !u!212 &212333712477064488
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -118,7 +119,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 7691a6460f3c55d4e91c1adbc2deef03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

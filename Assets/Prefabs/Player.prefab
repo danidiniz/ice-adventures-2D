@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4897966065637390}
   - component: {fileID: 212192004057160706}
   - component: {fileID: 114190403954903692}
-  - component: {fileID: 114397232924798028}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -53,34 +52,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9483fca4b0a92a14aa3ac363e832debd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isWalkable: 0
+  pararMovimentoDeQuemPassarPorCima: 0
   posI: 0
   posJ: 0
-  tipo: 17
+  elemento: 17
+  tipoDoElemento: 1
   nameDoElemento: dinizknight
   tempoParaAparecerNoMapa: 0
   posicaoParaAparecerNoMapaI: 0
   posicaoParaAparecerNoMapaJ: 0
   especialAtivo: 0
---- !u!114 &114397232924798028
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1992230703315310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0b98ebc88ab0d04ba21d932f12033b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 5
-  objectCurrentDirection: 0
-  pararMovimentoDoPlayerNoIce: 0
-  podeAnimarMovimento: 0
-  direcaoDoMovimentoI: 0
-  direcaoDoMovimentoJ: 0
-  jaPassouNoIce: 0
-  icesDoMovimento: []
-  podePegarInputDoPlayer: 0
 --- !u!212 &212192004057160706
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -78,13 +78,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863ad29b37ffb2449ab47bbfcfcc92bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posI: 0
-  posJ: 0
-  tipo: 8
-  nameDoElemento: 
-  tipoDeIceAntesDeSerTransformado: 0
   isWalkable: 0
   pararMovimentoDeQuemPassarPorCima: 0
+  posI: 0
+  posJ: 0
+  elemento: 8
+  tipoDoElemento: 0
+  nameDoElemento: 
+  elementoEmCimaDoIce: {fileID: 0}
 --- !u!212 &212464409586669684
 SpriteRenderer:
   m_ObjectHideFlags: 1

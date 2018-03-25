@@ -48,20 +48,23 @@ public class MapCreator : MonoBehaviour {
 
     public bool modoCriarMapaAtivado;
 
+    public enum tipoDeElemento { ICE, OBJETO };
 
     public enum elementosPossiveisNoMapa {
         // Tipos de ice
-        ICE, ICE_QUEBRADO_1, ICE_QUEBRADO_2, ICE_QUEBRADO_3, ICE_QUEBRADO_FINAL, ICE_QUEBRADO_COM_CRATE_EM_CIMA, BURACO, IGLU, START, END,
+        ICE, ICE_QUEBRADO_1, ICE_QUEBRADO_2, ICE_QUEBRADO_3, ICE_QUEBRADO_FINAL, ICE_QUEBRADO_FINAL_CRATE, BURACO, IGLU, START, END,
         // Tipos de crate
-        CRATE, CRATE_COM_PINGUIM_1, CRATE_COM_PINGUIM_2, CRATE_COM_PINGUIM_3, CRATE_COM_PINGUIM_4,
+        CRATE, CRATE_COM_PINGUIM, CRATE_COM_PINGUIM_2, CRATE_COM_PINGUIM_3, CRATE_COM_PINGUIM_4,
         // Tipos de especial
         ESPECIAL_PEIXE, ESPECIAL_ASAS,
         // Players
         PLAYER, PINGUIM, ONDA_DA_ORCA, URSO_POLAR
     };
-    public elementosPossiveisNoMapa elementoSelecionado;
 
-    
+    public elementosPossiveisNoMapa elementoSelecionado;
+    public tipoDeElemento tipoDoElementoSelecionado;
+
+
     public static IcesDefault[,] map;
     [SerializeField]
     private IcesDefault[,] mapOriginal; // mapa sem as alterações para quando o player perder ou dar restart
@@ -83,7 +86,7 @@ public class MapCreator : MonoBehaviour {
     public GameObject ice_quebrado_2;
     public GameObject ice_quebrado_3;
     public GameObject ice_quebrado_final;
-    public GameObject ice_quebrado_com_crate;
+    public GameObject ice_quebrado_final_crate;
 
     [SerializeField]
     private short linhas;
@@ -126,7 +129,7 @@ public class MapCreator : MonoBehaviour {
         PoolManager.instance.CreatePool(ice_quebrado_2, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_com_crate, linhas * colunas + 1);
+        PoolManager.instance.CreatePool(ice_quebrado_final_crate, linhas * colunas + 1);
         PoolManager.instance.CreatePool(crate, linhas * colunas + 1);
         PoolManager.instance.CreatePool(start, 2);
         PoolManager.instance.CreatePool(end, 2);
@@ -260,7 +263,7 @@ public class MapCreator : MonoBehaviour {
 
                 GameObject novoIce = Instantiate(mapOriginal[i, j].gameObject, new Vector2(pos.x + iceExtentsX * 2 * j, pos.y), Quaternion.identity);
                 map[i, j] = mapOriginal[i,j];
-                map[i, j].InitIce((short)i, (short)j);
+                map[i, j].setPosition((short)i, (short)j);
 
                 novoIce.name = " [" + i + "][" + j + "]";
                 novoIce.transform.parent = mapIcesParent;
@@ -300,8 +303,8 @@ public class MapCreator : MonoBehaviour {
                 return ice_quebrado_3;
             case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL:
                 return ice_quebrado_final;
-            case elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA:
-                return ice_quebrado_com_crate;
+            case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL_CRATE:
+                return ice_quebrado_final_crate;
             default:
                 Debug.Log("Class MapCreator, Function InstanciarElemento: elemento não existe");
                 return ice;

@@ -99,13 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a3985a7dd23a8438bb58a830992095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posI: 14
-  posJ: 16
-  tipo: 6
-  nameDoElemento: 
-  tipoDeIceAntesDeSerTransformado: 0
   isWalkable: 0
   pararMovimentoDeQuemPassarPorCima: 0
+  posI: 14
+  posJ: 16
+  elemento: 6
+  tipoDoElemento: 0
+  nameDoElemento: 
+  elementoEmCimaDoIce: {fileID: 0}
   posicaoDoOutroBuracoI: 0
   posicaoDoOutroBuracoJ: 0
 --- !u!212 &212810331519144726
