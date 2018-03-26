@@ -82,6 +82,30 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
     public virtual void Quebrar(SerVivo quemEstaQuebrando)
     {
+        if (PlayerMovementAgrVai.playerEmMovimento)
+        {
+            // Se ainda não houve nenhuma interação nesse step (ou seja, essa é a primeira) 
+            // Crio a Stack
+            if (!Interaction.interactions.ContainsKey(Step.keyCount))
+            {
+                // Como está havendo uma interação, seto a Key desse step
+                Step.steps.Peek().SetarKey();
+
+                Interaction.interactions.Add(Step.keyCount, new Stack<Interaction>());
+                Debug.Log("Interaction criada. Setei key do step: " + Step.steps.Peek().stepKey);
+            }
+
+            if (Interaction.interactions.ContainsKey(Step.keyCount))
+            {
+                Interaction.interactions[Step.steps.Peek().stepKey].Push(new Interaction(Interaction.tiposDeInteracao.QUEBRAR, this));
+                Debug.Log("Num de interactions: " + Interaction.interactions[Step.steps.Peek().stepKey].Count);
+
+                MapCreator.map[posI, posJ].elementoEmCimaDoIce = null;
+                gameObject.SetActive(false);
+            }
+        }
+
+        /*
         // Pode conter algo dentro?
         // Qualquer elemento do jogo!! xD
 
@@ -96,6 +120,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         {
             Destroy(gameObject);
         }
+        */
 
     }
 

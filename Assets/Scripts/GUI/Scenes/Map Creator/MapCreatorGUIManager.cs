@@ -5,6 +5,21 @@ using UnityEngine.UI;
 
 public class MapCreatorGUIManager : MonoBehaviour
 {
+
+    public void Undo()
+    {
+        if (PlayerMovementAgrVai.playerEmMovimento)
+            return;
+        if(Step.steps.Count > 0)
+        {
+            Debug.Log("Undo do step " + Step.steps.Peek().stepKey);
+            Step.steps.Peek().ExecutarStep();
+            Debug.Log(Step.steps.Count);
+        }
+    }
+
+
+
     #region Crate
     // informações do que é permitido fazer com a crate
     public GameObject canvasInGameCrateBooleansInfo;

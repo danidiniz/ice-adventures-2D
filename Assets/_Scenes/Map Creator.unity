@@ -1352,6 +1352,62 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &439446263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 439446264}
+  - component: {fileID: 439446265}
+  - component: {fileID: 439446266}
+  m_Layer: 0
+  m_Name: Steps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &439446264
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 439446263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.15802725, y: 0.6499747, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &439446265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 439446263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc07b620ba8bd94cb9fb2ba091ecb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &439446266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 439446263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3120cfcfb5f0bd04cbd195c893011e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipoDaInteracao: 0
+  elemento: {fileID: 0}
+  posI: 0
+  posJ: 0
 --- !u!1 &461558607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2656,7 +2712,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1092770678}
-        m_MethodName: MapCreatorAtivarOuDesativar
+        m_MethodName: Undo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2821,8 +2877,8 @@ MonoBehaviour:
     type: 2}
   ice_quebrado_final_crate: {fileID: 1668431478836286, guid: 2dfc974827a656c40ad61277420329e2,
     type: 2}
-  linhas: 3
-  colunas: 3
+  linhas: 7
+  colunas: 7
 --- !u!1 &1000953250
 GameObject:
   m_ObjectHideFlags: 0
@@ -4852,46 +4908,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1652200690}
---- !u!1 &1683562522
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1683562524}
-  - component: {fileID: 1683562523}
-  m_Layer: 0
-  m_Name: test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1683562523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1683562522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7baef8663d2ac46ab2b9415d0e9686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1683562524
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1683562522}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3172853, y: 2.2871077, z: -0.019042969}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1752407620
 GameObject:
   m_ObjectHideFlags: 0
@@ -5819,6 +5835,7 @@ MonoBehaviour:
   podePegarInputDoPlayer: 0
   pegouInputDoPlayer: 0
   pararMovimento: 0
+  stepJaCriado: 0
   direcaoDoMovimentoI: 0
   direcaoDoMovimentoJ: 0
   movementSpeed: 5

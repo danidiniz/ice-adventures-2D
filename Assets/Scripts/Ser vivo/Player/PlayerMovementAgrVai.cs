@@ -8,10 +8,13 @@ public class PlayerMovementAgrVai : MonoBehaviour
 {
     public Text debugTemporario;
 
-
+    public static bool playerEmMovimento; // boolean que será utilizada pra criar os steps
     public bool podePegarInputDoPlayer;
     public bool pegouInputDoPlayer;
     public bool pararMovimento;
+
+    // Booleans do Undo
+    public bool stepJaCriado;
 
     [SerializeField]
     short direcaoDoMovimentoI;
@@ -63,9 +66,11 @@ public class PlayerMovementAgrVai : MonoBehaviour
 
     private void Start()
     {
+        playerEmMovimento = false;
         podePegarInputDoPlayer = true;
         pegouInputDoPlayer = false;
         pararMovimento = false;
+        
 
         ObjectCurrentDirection = objectPossiveisDirections.SEM_MOVIMENTO;
 
@@ -81,6 +86,30 @@ public class PlayerMovementAgrVai : MonoBehaviour
 
     private void Update()
     {
+
+        playerEmMovimento = !podePegarInputDoPlayer;
+
+        if (direcaoDoMovimentoI != 0 || direcaoDoMovimentoJ != 0)
+        {
+            playerEmMovimento = true;
+            if (!stepJaCriado)
+            {
+                stepJaCriado = true;
+                StepMovimento temp = new StepMovimento(PlayerInfo.instance.PosI, PlayerInfo.instance.PosJ);
+                Step.steps.Push(temp);
+                
+                Step.keyCount++;
+
+
+                Debug.Log("Step criado | Step key: " + Step.steps.Peek().stepKey + " | Step key count: " + Step.keyCount);
+            }
+        }
+        if (direcaoDoMovimentoI == 0 && direcaoDoMovimentoJ == 0)
+        {
+            playerEmMovimento = false;
+            stepJaCriado = false;
+        }
+
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             MovimentarPlayerNoMapa();
@@ -237,6 +266,17 @@ public class PlayerMovementAgrVai : MonoBehaviour
     {
         if (MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(serVivoInfoComponente.PosI + direcaoI), (short)(serVivoInfoComponente.PosJ + direcaoJ)))
         {
+
+            // Temporario
+            if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce != null)
+            {
+                if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.Elemento == MapCreator.elementosPossiveisNoMapa.CRATE)
+                {
+                    MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.GetComponent<IceCrate>().Quebrar(GetComponent<SerVivo>());
+                    return true;
+                }
+            }
+
             if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].isWalkable)
             {
                 if(MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce == null)

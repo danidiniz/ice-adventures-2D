@@ -15,7 +15,7 @@ public abstract class ElementoDoMapa : MonoBehaviour {
     [SerializeField]
     protected MapCreator.elementosPossiveisNoMapa elemento;
     [SerializeField]
-    private MapCreator.tipoDeElemento tipoDoElemento;
+    protected MapCreator.tipoDeElemento tipoDoElemento;
 
     [SerializeField]
     string nameDoElemento;
@@ -73,7 +73,7 @@ public abstract class ElementoDoMapa : MonoBehaviour {
         }
     }
 
-    protected MapCreator.tipoDeElemento TipoDoElemento
+    public MapCreator.tipoDeElemento TipoDoElemento
     {
         get
         {

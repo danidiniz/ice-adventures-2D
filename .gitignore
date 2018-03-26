@@ -41,3 +41,6 @@ ehthumbs.db
 Thumbs.db
 .vs/Ice Adventures 2D/v15/Server/sqlite3/storage.ide-shm
 .vs/Ice Adventures 2D/v15/Server/sqlite3/storage.ide-wal
+.vs/Ice Adventures 2D/v15/Server/sqlite3/storage.ide
+*.ide
+*.ide
