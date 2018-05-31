@@ -30,7 +30,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
         TipoDoElemento = MapCreator.tipoDeElemento.ICE;
     }
 
-    public virtual bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
+    public virtual bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoQuePassouNoIce)
     {
         //Debug.Log(elementoEmCimaDoIce.name + "["+PosI+"]["+PosJ+"]");
         if (Elemento == oQueEstaEmCima)

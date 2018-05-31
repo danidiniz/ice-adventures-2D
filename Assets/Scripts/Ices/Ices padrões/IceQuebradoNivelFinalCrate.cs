@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IceQuebradoNivelFinalCrate : IcesDefault {
 
+    // DESABILITAR OPÇÕES DE QUEBRAR ETC DA CRATE QUE ESTÁ EM CIMA DESSE ICE
+
     void Awake()
     {
         isWalkable = true;

@@ -86,7 +86,6 @@ public class PlayerMovementAgrVai : MonoBehaviour
 
     private void Update()
     {
-
         playerEmMovimento = !podePegarInputDoPlayer;
 
         if (direcaoDoMovimentoI != 0 || direcaoDoMovimentoJ != 0)

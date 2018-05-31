@@ -1393,6 +1393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc07b620ba8bd94cb9fb2ba091ecb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stepKey: 0
 --- !u!114 &439446266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5844,6 +5845,18 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   directionChosen: 0
   jaExecutouAlgoPassouPorAquiDoIce: 0
+--- !u!114 &1924616917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1924616914}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e961727727ecb4b98655f193659cae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectCurrentDirection: 0
 --- !u!1 &1938698300
 GameObject:
   m_ObjectHideFlags: 0
