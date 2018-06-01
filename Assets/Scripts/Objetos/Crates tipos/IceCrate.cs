@@ -139,7 +139,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         if (((quemEstaPulando.PosI == posI + 1 || (quemEstaPulando.PosI == posI - 1)) && quemEstaPulando.PosJ == posJ) ||
         (((quemEstaPulando.PosJ == posJ + 1) || (quemEstaPulando.PosJ == posJ - 1)) && quemEstaPulando.PosI == posI))
         {
-            // Faço a diferença das posições da Crate e de quem está empurrando
+            // Faço a diferença das posições da Crate e de quem está pulando
             // Dessa forma basta eu somar à posição da Crate para saber em qual eixo vou andar
             short movimentaI = (short)(PosI - quemEstaPulando.PosI);
             short movimentaJ = (short)(PosJ - quemEstaPulando.PosJ);

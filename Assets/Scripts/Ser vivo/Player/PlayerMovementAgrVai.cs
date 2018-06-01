@@ -13,8 +13,11 @@ public class PlayerMovementAgrVai : MonoBehaviour
     public bool pegouInputDoPlayer;
     public bool pararMovimento;
 
-    // Booleans do Undo
-    public bool stepJaCriado;
+    // Variaveis do Undo
+    public bool undoJaCriado;
+    public bool finalizouMovimento; // boolean para setar posicao em que player parou
+    public Vector2 playerLastPos;
+
 
     [SerializeField]
     short direcaoDoMovimentoI;
@@ -27,7 +30,7 @@ public class PlayerMovementAgrVai : MonoBehaviour
     [SerializeField]
     private objectPossiveisDirections objectCurrentDirection;
 
-    public Vector2 startPos;
+    public Vector2 startPosTouch;
     public Vector2 direction;
     public bool directionChosen;
 
@@ -48,6 +51,32 @@ public class PlayerMovementAgrVai : MonoBehaviour
             objectCurrentDirection = value;
         }
     }
+
+    public short DirecaoDoMovimentoI
+    {
+        get
+        {
+            return direcaoDoMovimentoI;
+        }
+
+        set
+        {
+            direcaoDoMovimentoI = value;
+        }
+    }
+
+    public short DirecaoDoMovimentoJ
+    {
+        get
+        {
+            return direcaoDoMovimentoJ;
+        }
+
+        set
+        {
+            direcaoDoMovimentoJ = value;
+        }
+    }
     #endregion
 
     static PlayerMovementAgrVai _instance;
@@ -66,52 +95,88 @@ public class PlayerMovementAgrVai : MonoBehaviour
 
     private void Start()
     {
+        serVivoInfoComponente = GetComponent(typeof(SerVivo)) as SerVivo;
+
         playerEmMovimento = false;
         podePegarInputDoPlayer = true;
         pegouInputDoPlayer = false;
         pararMovimento = false;
-        
 
+        undoJaCriado = false;
+        finalizouMovimento = true;
+        playerLastPos = new Vector2(serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ);
+        
         ObjectCurrentDirection = objectPossiveisDirections.SEM_MOVIMENTO;
 
         transform.position = MapCreator.map[0, 0].gameObject.transform.position;
-
-        serVivoInfoComponente = GetComponent(typeof(SerVivo)) as SerVivo;
-
-        direcaoDoMovimentoI = 0;
-        direcaoDoMovimentoJ = 0;
+        
+        DirecaoDoMovimentoI = 0;
+        DirecaoDoMovimentoJ = 0;
 
         jaExecutouAlgoPassouPorAquiDoIce = false;
     }
 
     private void Update()
     {
-        playerEmMovimento = !podePegarInputDoPlayer;
+        if (serVivoInfoComponente == null)
+            return;
 
-        if (direcaoDoMovimentoI != 0 || direcaoDoMovimentoJ != 0)
+        // deletar
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            playerEmMovimento = true;
-            if (!stepJaCriado)
+            if (UndoRedo.steps.Peek().tipoDePasso == Passo.tiposDePasso.MOVIMENTAR)
             {
-                stepJaCriado = true;
-                StepMovimento temp = new StepMovimento(PlayerInfo.instance.PosI, PlayerInfo.instance.PosJ);
-                Step.steps.Push(temp);
                 
-                Step.keyCount++;
-
-
-                Debug.Log("Step criado | Step key: " + Step.steps.Peek().stepKey + " | Step key count: " + Step.keyCount);
+                Debug.Log("Pilha:");
+                UndoMovimento temp = UndoRedo.steps.Pop() as UndoMovimento;
+                Debug.Log("Player last pos: " + playerLastPos.x + ", " + playerLastPos.y);
+                Debug.Log("Ice onde começou: [" + temp.iceOndeComecouMovimento.PosI + "][" + temp.iceOndeComecouMovimento.PosJ + "]");
+                Debug.Log("Ice onde terminou: [" + temp.iceOndeTerminouMovimento.PosI + "][" + temp.iceOndeTerminouMovimento.PosJ + "]");
+                
+                /*
+                Debug.Log("Objetos que interagiram");
+                for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
+                {
+                    Debug.Log(UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
+                }
+                */
             }
         }
-        if (direcaoDoMovimentoI == 0 && direcaoDoMovimentoJ == 0)
+
+
+        playerEmMovimento = !podePegarInputDoPlayer;
+
+        // Importante criar o Undo antes do método de Movimento
+        // porque dessa forma eu crio o Undo de Movimento ANTES
+        // de um Undo de teleportar, por exemplo.
+        if (!playerEmMovimento) // Só entra aqui se o player estiver parado
+        {
+            if (!undoJaCriado)
+            {
+                undoJaCriado = true;
+                Debug.Log("Começou: " + playerLastPos.x + ", " + playerLastPos.y + "\nTerminou: " + serVivoInfoComponente.PosI + ", " + serVivoInfoComponente.PosJ);
+                UndoRedo.steps.Push(new UndoMovimento(
+                    serVivoInfoComponente,
+                    MapCreator.map[(int)playerLastPos.x, (int)playerLastPos.y],
+                    MapCreator.map[serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ]
+                    ));
+                playerLastPos = new Vector2(serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ);
+            }
+        }
+        if (playerEmMovimento)
+        {
+            undoJaCriado = false;
+        }
+
+        if (DirecaoDoMovimentoI == 0 && DirecaoDoMovimentoJ == 0)
         {
             playerEmMovimento = false;
-            stepJaCriado = false;
         }
 
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             MovimentarPlayerNoMapa();
+
             if (podePegarInputDoPlayer)
             {
                 ZerarDirecaoMovimentos();
@@ -137,14 +202,14 @@ public class PlayerMovementAgrVai : MonoBehaviour
                     // Record initial touch position.
                     case TouchPhase.Began:
                         debugTemporario.text = "Touch Began";
-                        startPos = touch.position;
+                        startPosTouch = touch.position;
                         directionChosen = false;
                         break;
 
                     // Determine direction by comparing the current touch position with the initial one.
                     case TouchPhase.Moved:
                         debugTemporario.text = "Touch Moved";
-                        direction = touch.position - startPos;
+                        direction = touch.position - startPosTouch;
                         break;
 
                     // Report that a direction has been chosen when the finger is lifted.
@@ -161,7 +226,7 @@ public class PlayerMovementAgrVai : MonoBehaviour
                 ZerarDirecaoMovimentos();
                 PegarInputSwipe();
                 direction = Vector3.zero;
-                debugTemporario.text = "Pegou swipe | dirI " + direcaoDoMovimentoI + " dirJ " + direcaoDoMovimentoJ;
+                debugTemporario.text = "Pegou swipe | dirI " + DirecaoDoMovimentoI + " dirJ " + DirecaoDoMovimentoJ;
             }
         }
     }
@@ -185,15 +250,15 @@ public class PlayerMovementAgrVai : MonoBehaviour
             if (pegouInputDoPlayer)
             {
                 // Se já possuir uma direção
-                if (direcaoDoMovimentoI != 0 || direcaoDoMovimentoJ != 0)
+                if (DirecaoDoMovimentoI != 0 || DirecaoDoMovimentoJ != 0)
                 {
                     // Verifico se posso continuar movimentando
-                    bool podeContinuarMovendo = VerificarSePossoMovimentarParaProximoIce(direcaoDoMovimentoI, direcaoDoMovimentoJ);
+                    bool podeContinuarMovendo = VerificarSePossoMovimentarParaProximoIce(DirecaoDoMovimentoI, DirecaoDoMovimentoJ);
                     if (podeContinuarMovendo)
                     {
                         // Se puder, atualizo a posição do player
-                        serVivoInfoComponente.PosI += direcaoDoMovimentoI;
-                        serVivoInfoComponente.PosJ += direcaoDoMovimentoJ;
+                        serVivoInfoComponente.PosI += DirecaoDoMovimentoI;
+                        serVivoInfoComponente.PosJ += DirecaoDoMovimentoJ;
                         // Não permito o input do player pois ele está movendo
                         podePegarInputDoPlayer = false;
                         // Atualizo pararMovimento
@@ -234,29 +299,29 @@ public class PlayerMovementAgrVai : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_CIMA;
-            direcaoDoMovimentoI = -1;
-            direcaoDoMovimentoJ = 0;
+            DirecaoDoMovimentoI = -1;
+            DirecaoDoMovimentoJ = 0;
             pegouInputDoPlayer = true;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_DIREITA;
-            direcaoDoMovimentoI = 0;
-            direcaoDoMovimentoJ = 1;
+            DirecaoDoMovimentoI = 0;
+            DirecaoDoMovimentoJ = 1;
             pegouInputDoPlayer = true;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_BAIXO;
-            direcaoDoMovimentoI = 1;
-            direcaoDoMovimentoJ = 0;
+            DirecaoDoMovimentoI = 1;
+            DirecaoDoMovimentoJ = 0;
             pegouInputDoPlayer = true;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_ESQUERDA;
-            direcaoDoMovimentoI = 0;
-            direcaoDoMovimentoJ = -1;
+            DirecaoDoMovimentoI = 0;
+            DirecaoDoMovimentoJ = -1;
             pegouInputDoPlayer = true;
         }
     }
@@ -308,15 +373,15 @@ public class PlayerMovementAgrVai : MonoBehaviour
             if (y > 0)
             {
                 ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_CIMA;
-                direcaoDoMovimentoI = -1;
-                direcaoDoMovimentoJ = 0;
+                DirecaoDoMovimentoI = -1;
+                DirecaoDoMovimentoJ = 0;
                 pegouInputDoPlayer = true;
             }
             else if (y < 0)
             {
                 ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_BAIXO;
-                direcaoDoMovimentoI = 1;
-                direcaoDoMovimentoJ = 0;
+                DirecaoDoMovimentoI = 1;
+                DirecaoDoMovimentoJ = 0;
                 pegouInputDoPlayer = true;
             }
         }
@@ -325,15 +390,15 @@ public class PlayerMovementAgrVai : MonoBehaviour
             if (x > 0)
             {
                 ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_DIREITA;
-                direcaoDoMovimentoI = 0;
-                direcaoDoMovimentoJ = 1;
+                DirecaoDoMovimentoI = 0;
+                DirecaoDoMovimentoJ = 1;
                 pegouInputDoPlayer = true;
             }
             else if (x < 0)
             {
                 ObjectCurrentDirection = objectPossiveisDirections.INDO_PARA_ESQUERDA;
-                direcaoDoMovimentoI = 0;
-                direcaoDoMovimentoJ = -1;
+                DirecaoDoMovimentoI = 0;
+                DirecaoDoMovimentoJ = -1;
                 pegouInputDoPlayer = true;
             }
         }
@@ -345,8 +410,8 @@ public class PlayerMovementAgrVai : MonoBehaviour
     // apenas execute o AlgoPassouPorAqui do ice que ele acabou de pular
     public void ZerarDirecaoMovimentos()
     {
-        direcaoDoMovimentoI = 0;
-        direcaoDoMovimentoJ = 0;
+        DirecaoDoMovimentoI = 0;
+        DirecaoDoMovimentoJ = 0;
     }
 
 }

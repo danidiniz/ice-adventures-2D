@@ -10,12 +10,9 @@ public class MapCreatorGUIManager : MonoBehaviour
     {
         if (PlayerMovementAgrVai.playerEmMovimento)
             return;
-        if(Step.steps.Count > 0)
-        {
-            Debug.Log("Undo do step " + Step.steps.Peek().stepKey);
-            Step.steps.Peek().ExecutarStep();
-            Debug.Log(Step.steps.Count);
-        }
+        if (UndoRedo.steps.Count == 0)
+            return;
+        UndoRedo.ExecutarUndo();
     }
 
 

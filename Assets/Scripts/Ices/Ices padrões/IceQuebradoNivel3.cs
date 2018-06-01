@@ -13,7 +13,7 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
         nivelDoIceQuebrado = 3;
     }
 
-    public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
+    public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoQuePassouNoIce)
     {
         if (Elemento == oQueEstaEmCima)
             return false;
@@ -26,6 +26,7 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
                 Debug.Log(name + " quebrado passou do nível 3 para nível final");
                 Debug.Log("Game over :(");
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL);
+                CriarInteraction(elementoQuePassouNoIce);
                 // Game over
                 break;
 
@@ -48,6 +49,21 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
         }
 
         return true;
+    }
 
+    public override void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    {
+        // É através do elementoQueInteragiu (que está na classe do UndoInteraction) que vou executar o ExecutarUndoInteraction
+        UndoRedo.steps.Peek().interactions.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+        Debug.Log("Criei interaction " + this.name + " | " + PosI + ", " + PosJ);
+        for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
+        {
+            Debug.Log("Interaction " + i + ": " + UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
+        }
+    }
+
+    public override void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    {
+        MapCreator.map[PosI, PosJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3);
     }
 }

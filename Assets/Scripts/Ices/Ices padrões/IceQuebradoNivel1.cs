@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceQuebradoNivel1 : IcesDefault
+public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa>
 {
     public byte nivelDoIceQuebrado;
     
@@ -15,9 +15,9 @@ public class IceQuebradoNivel1 : IcesDefault
         nivelDoIceQuebrado = 1;
     }
 
-    public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
+    public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoQuePassouNoIce)
     {
-        base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
+        base.AlgoPassouPorAqui(oQueEstaEmCima, elementoQuePassouNoIce);
 
         if (Elemento == oQueEstaEmCima)
             return false;
@@ -29,6 +29,7 @@ public class IceQuebradoNivel1 : IcesDefault
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
                 Debug.Log(name + " quebrado passou do nível 1 para nível 2");
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
+                CriarInteraction(elementoQuePassouNoIce);
                 break;
 
             case MapCreator.elementosPossiveisNoMapa.CRATE:
@@ -80,6 +81,28 @@ public class IceQuebradoNivel1 : IcesDefault
         }
 
         return true;
-
     }
+
+    // Preciso saber quem passou por cima e o elemento que estava em cima. Por que?
+    // Exemplo: se o player passar por cima de um especial e ganhar 10 pontos, quando
+    //          eu der Undo, como vou retirar 10 pontos e recolocar o especial lá?
+    //          sabendo quem passou por cima (player) e o que estava em cima (especial)
+    //          consigo dentro da classe do especial (que também vai implementar o IUndoInteraction)
+    //          retirar os 10 pontos caso tenha sido um player que passou por cima.
+    public virtual void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    {
+        // É através do elementoQueInteragiu (que está na classe do UndoInteraction) que vou executar o ExecutarUndoInteraction
+        UndoRedo.steps.Peek().interactions.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+        Debug.Log("Criei interaction " + this.name + " | " + PosI + ", " + PosJ);
+        for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
+        {
+            Debug.Log("Interaction " + i + ": " + UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
+        }
+    }
+
+    public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    {
+        MapCreator.map[PosI, PosJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1);
+    }
+
 }

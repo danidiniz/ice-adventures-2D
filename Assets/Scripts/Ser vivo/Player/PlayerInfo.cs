@@ -29,7 +29,7 @@ public class PlayerInfo : SerVivo {
         }
     }
     
-    void Start ()
+    void Awake ()
     {
         PosI = 0;
         PosJ = 0;
