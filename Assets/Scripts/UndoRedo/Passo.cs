@@ -10,6 +10,7 @@ public abstract class Passo {
     // 2) Undo que é uma interação durante o movimento, ou seja, não são um Step.
     //    Ex.: IceQuebrado. O player movimenta e passa por cima de um, o AlgoPassouPorAqui do IceQuebrado não vai criar um Step novo,
     //         ele vai criar um interação nesse Step atual (do movimento)
+
     public List<UndoInteraction> interactions;
 
     public enum tiposDePasso

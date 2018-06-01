@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour {
-    
+public class PoolManager : MonoBehaviour
+{
+
     Dictionary<int, Queue<ElementoDoMapa>> poolDictionary = new Dictionary<int, Queue<ElementoDoMapa>>();
 
     static PoolManager _instance;
@@ -33,24 +34,52 @@ public class PoolManager : MonoBehaviour {
 
             for (int i = 0; i < poolSize; i++)
             {
+                // temp
+                int r = Random.Range(0, 100);
+
+
                 GameObject temp = Instantiate(prefab) as GameObject;
+
+                // temp
+                temp.name += " " + r.ToString();
+
                 temp.SetActive(false);
                 ElementoDoMapa newIce = temp.GetComponent(typeof(ElementoDoMapa)) as ElementoDoMapa;
-                
+
                 poolDictionary[poolKey].Enqueue(newIce);
                 newIce.gameObject.transform.SetParent(poolHolder.transform);
+
+                // temp
+                if (newIce.Elemento == MapCreator.elementosPossiveisNoMapa.ICE)
+                    Debug.Log("Coloquei na fila " + temp.name);
             }
         }
     }
 
-    
+
     public void ReuseObject(GameObject prefab, Vector2 position, Quaternion rotation, short posI, short posJ)
     {
         int poolKey = prefab.GetInstanceID();
 
         if (poolDictionary.ContainsKey(poolKey))
         {
+            // Como os elementos não são 'destruídos' automaticamente,
+            // o Object Pooling estava dando erro uma hora, pois estava
+            // re usando um elemento que estava ativo na cena..
+            // Dessa forma eu não permito isso
+            while (poolDictionary[poolKey].Peek().gameObject.activeSelf)
+            {
+                // Tiro elemento ativo do início da fila
+                ElementoDoMapa temp = poolDictionary[poolKey].Dequeue();
+                // Coloco ele no final da fila
+                poolDictionary[poolKey].Enqueue(temp);
+                // Faço isso até encontrar o elemento que está desativado para poder usá-lo
+
+                //Debug.Log("Elemento " + temp.gameObject.name + " estava ativo na cena e foi para o final da fila.");
+            }
+
             ElementoDoMapa objectToReuse = poolDictionary[poolKey].Dequeue();
+
             poolDictionary[poolKey].Enqueue(objectToReuse);
 
             objectToReuse.gameObject.transform.position = position;
@@ -105,7 +134,7 @@ public class PoolManager : MonoBehaviour {
             objectToReuse.gameObject.SetActive(true);
         }
     }
-    
+
 
     /*
     public class ObjectInstance
@@ -148,5 +177,5 @@ public class PoolManager : MonoBehaviour {
         }
     }
     */
-    
+
 }

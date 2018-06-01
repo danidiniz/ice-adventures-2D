@@ -73,6 +73,9 @@ public class ObjetoDoMapa : ElementoDoMapa {
     }
     #endregion
 
+    public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
 
+    }
 
 }

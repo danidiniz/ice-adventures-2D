@@ -78,6 +78,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
                     break;
             }
             
+            // Verificando o tipo do elemento (ICE ou OBJETO)
             if (Elemento != MapCreator.instance.elementoSelecionado)
             {
                 if (MapCreator.instance.tipoDoElementoSelecionado == MapCreator.tipoDeElemento.OBJETO)
@@ -161,4 +162,20 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
             return true;
         return false;
     }
+
+    public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
+        base.CopiarInformacoesDesseElementoPara(target);
+
+        // Informações importantes de qualquer Ice
+        // elemento em cima
+        try
+        {
+            ((IcesDefault)target).elementoEmCimaDoIce = elementoEmCimaDoIce;
+        } catch(Exception e)
+        {
+            print("Não copiou informações para o IcesDefault. Erro: " + e);
+        }
+    }
+
 }

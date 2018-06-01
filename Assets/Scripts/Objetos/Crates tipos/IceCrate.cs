@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IEmpurravel<SerVivo>
+public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IEmpurravel<SerVivo>, IUndoInteraction<ElementoDoMapa, ElementoDoMapa>
 {
     
     
@@ -82,30 +82,14 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
     public virtual void Quebrar(SerVivo quemEstaQuebrando)
     {
-        if (PlayerMovementAgrVai.playerEmMovimento)
-        {
-            // Se ainda não houve nenhuma interação nesse step (ou seja, essa é a primeira) 
-            // Crio a Stack
-            if (!Interaction.interactions.ContainsKey(Step.keyCount))
-            {
-                // Como está havendo uma interação, seto a Key desse step
-                Step.steps.Peek().SetarKey();
+        // Criando a interaction
+        CriarInteraction(quemEstaQuebrando);
 
-                Interaction.interactions.Add(Step.keyCount, new Stack<Interaction>());
-                Debug.Log("Interaction criada. Setei key do step: " + Step.steps.Peek().stepKey);
-            }
 
-            if (Interaction.interactions.ContainsKey(Step.keyCount))
-            {
-                Interaction.interactions[Step.steps.Peek().stepKey].Push(new Interaction(Interaction.tiposDeInteracao.QUEBRAR, this));
-                Debug.Log("Num de interactions: " + Interaction.interactions[Step.steps.Peek().stepKey].Count);
 
-                MapCreator.map[posI, posJ].elementoEmCimaDoIce = null;
-                gameObject.SetActive(false);
-            }
-        }
 
-        /*
+
+
         // Pode conter algo dentro?
         // Qualquer elemento do jogo!! xD
 
@@ -120,7 +104,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         {
             Destroy(gameObject);
         }
-        */
+        
 
     }
 
@@ -265,5 +249,26 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         }
         */
         Debug.Log(log);
+    }
+
+    public void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    {
+        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+    }
+
+    public void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueInteragiu)
+    {
+        this.gameObject.SetActive(true);
+
+        /*
+        if(UndoRedo.steps.Peek().interactions.Count > 0)
+        {
+            for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
+            {
+                Debug.Log("Caixas colocadas na pos [" + UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.PosI + "][" +
+                    UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.PosI + "]");
+            }
+        }
+        */
     }
 }

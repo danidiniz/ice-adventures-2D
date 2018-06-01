@@ -16,7 +16,8 @@ public class PlayerMovementAgrVai : MonoBehaviour
     // Variaveis do Undo
     public bool undoJaCriado;
     public bool finalizouMovimento; // boolean para setar posicao em que player parou
-    public Vector2 playerLastPos;
+    public short playerLastPosI;
+    public short playerLastPosJ;
 
 
     [SerializeField]
@@ -104,8 +105,9 @@ public class PlayerMovementAgrVai : MonoBehaviour
 
         undoJaCriado = false;
         finalizouMovimento = true;
-        playerLastPos = new Vector2(serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ);
-        
+        playerLastPosI = serVivoInfoComponente.PosI;
+        playerLastPosJ = serVivoInfoComponente.PosJ;
+
         ObjectCurrentDirection = objectPossiveisDirections.SEM_MOVIMENTO;
 
         transform.position = MapCreator.map[0, 0].gameObject.transform.position;
@@ -127,19 +129,21 @@ public class PlayerMovementAgrVai : MonoBehaviour
             if (UndoRedo.steps.Peek().tipoDePasso == Passo.tiposDePasso.MOVIMENTAR)
             {
                 
+                /*
                 Debug.Log("Pilha:");
                 UndoMovimento temp = UndoRedo.steps.Pop() as UndoMovimento;
-                Debug.Log("Player last pos: " + playerLastPos.x + ", " + playerLastPos.y);
+                Debug.Log("Player last pos: " + playerLastPosI + ", " + playerLastPosJ);
                 Debug.Log("Ice onde começou: [" + temp.iceOndeComecouMovimento.PosI + "][" + temp.iceOndeComecouMovimento.PosJ + "]");
                 Debug.Log("Ice onde terminou: [" + temp.iceOndeTerminouMovimento.PosI + "][" + temp.iceOndeTerminouMovimento.PosJ + "]");
+            */    
+
                 
-                /*
                 Debug.Log("Objetos que interagiram");
                 for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
                 {
                     Debug.Log(UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
                 }
-                */
+                
             }
         }
 
@@ -149,18 +153,42 @@ public class PlayerMovementAgrVai : MonoBehaviour
         // Importante criar o Undo antes do método de Movimento
         // porque dessa forma eu crio o Undo de Movimento ANTES
         // de um Undo de teleportar, por exemplo.
-        if (!playerEmMovimento) // Só entra aqui se o player estiver parado
+        if (!playerEmMovimento) // Só entra aqui quando o player terminar de movimentar
         {
             if (!undoJaCriado)
             {
                 undoJaCriado = true;
-                Debug.Log("Começou: " + playerLastPos.x + ", " + playerLastPos.y + "\nTerminou: " + serVivoInfoComponente.PosI + ", " + serVivoInfoComponente.PosJ);
+
+                //Debug.Log("Começou: " + playerLastPosI + ", " + playerLastPosJ + "\nTerminou: " + serVivoInfoComponente.PosI + ", " + serVivoInfoComponente.PosJ);
+
+                // Preciso refazer isso de uma forma genérica igual fiz o UndoInteractions,
+                // pois o UndoMovimento será usado por qualquer elemento que se movimente (urso, pinguim, etc)
+
                 UndoRedo.steps.Push(new UndoMovimento(
                     serVivoInfoComponente,
-                    MapCreator.map[(int)playerLastPos.x, (int)playerLastPos.y],
+                    MapCreator.map[playerLastPosI, playerLastPosJ],
                     MapCreator.map[serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ]
                     ));
-                playerLastPos = new Vector2(serVivoInfoComponente.PosI, serVivoInfoComponente.PosJ);
+                playerLastPosI = serVivoInfoComponente.PosI;
+                playerLastPosJ = serVivoInfoComponente.PosJ;
+
+                // Coloco as interactions que ocorreram na lista de interactions desse Step
+                if(UndoRedo.interactionsTemp.Count > 0)
+                {
+                    UndoRedo.steps.Peek().interactions = new List<UndoInteraction>(UndoRedo.interactionsTemp);
+                    UndoRedo.interactionsTemp.Clear();
+
+                    // apagar depois
+                    /*
+                    string lista = "";
+                    for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
+                    {
+                        lista += UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiuCimaGameObject.name + ", ";
+                    }
+                    Debug.Log("UndoMovimento("+UndoRedo.contador+") possui " + UndoRedo.steps.Peek().interactions.Count + " interactions:\n" + lista);
+                    */
+                }
+
             }
         }
         if (playerEmMovimento)

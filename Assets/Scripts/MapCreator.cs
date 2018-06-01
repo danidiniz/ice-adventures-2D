@@ -87,6 +87,7 @@ public class MapCreator : MonoBehaviour {
     public GameObject ice_quebrado_3;
     public GameObject ice_quebrado_final;
     public GameObject ice_quebrado_final_crate;
+    public GameObject especial_peixe;
 
     [SerializeField]
     private short linhas;
@@ -130,7 +131,7 @@ public class MapCreator : MonoBehaviour {
         PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas + 1);
         PoolManager.instance.CreatePool(ice_quebrado_final_crate, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(crate, linhas * colunas * 2); // tem que ter bastante crate 
+        PoolManager.instance.CreatePool(crate, linhas * colunas); // tem que ter bastante crate 
         PoolManager.instance.CreatePool(start, 2);
         PoolManager.instance.CreatePool(end, 2);
 

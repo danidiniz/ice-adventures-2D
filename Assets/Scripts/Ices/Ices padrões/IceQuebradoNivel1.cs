@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa>
+public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa, ElementoDoMapa>
 {
+    //temp
+    int rand;
+
     public byte nivelDoIceQuebrado;
     
     void Awake()
     {
+        //temp
+        rand = Random.Range(0, 100);
+
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
 
@@ -27,7 +33,9 @@ public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa>
             case MapCreator.elementosPossiveisNoMapa.PLAYER:
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
-                Debug.Log(name + " quebrado passou do nível 1 para nível 2");
+
+                //Debug.Log(name + " quebrado passou do nível 1 para nível 2");
+
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
                 CriarInteraction(elementoQuePassouNoIce);
                 break;
@@ -89,20 +97,58 @@ public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa>
     //          sabendo quem passou por cima (player) e o que estava em cima (especial)
     //          consigo dentro da classe do especial (que também vai implementar o IUndoInteraction)
     //          retirar os 10 pontos caso tenha sido um player que passou por cima.
-    public virtual void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    public void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
     {
         // É através do elementoQueInteragiu (que está na classe do UndoInteraction) que vou executar o ExecutarUndoInteraction
-        UndoRedo.steps.Peek().interactions.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+
+
+        //temp
+        /*
+        string lista = "";
+        for (int i = 0; i < UndoRedo.interactionsTemp.Count; i++)
+        {
+            lista += UndoRedo.interactionsTemp[i].GOelementoQueInteragiu1.name + "\n";
+        }
+        Debug.Log("Criei interaction (" + UndoInteraction.contadorInteract + ") no UndoMovimento ("+UndoRedo.contador+").\nLista de Interactions do UndoMovimento ("+UndoRedo.contador+"):\n"+lista);
+        */
+
+
+        /*
         Debug.Log("Criei interaction " + this.name + " | " + PosI + ", " + PosJ);
         for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
         {
             Debug.Log("Interaction " + i + ": " + UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
         }
+        */
     }
 
-    public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueInteragiu)
     {
+        Debug.Log("Executou undo do ice quebrado " + rand);
+
+        // Atualizo o mapa
+        IcesDefault temp = (IcesDefault)elementoQueInteragiu;
+        MapCreator.map[PosI, PosJ] = temp;
+        MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = temp.elementoEmCimaDoIce;
+
+
+        // Desativo quem está na posição desse ice
+        MapCreator.map[PosI, PosJ].gameObject.SetActive(false);
+
+        elementoQueInteragiu.gameObject.SetActive(true);
+        
         MapCreator.map[PosI, PosJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1);
+    }
+
+    public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
+        base.CopiarInformacoesDesseElementoPara(target);
+
+        // Informações importantes de um IceQuebrado:
+        // nivel
+        // 
+
     }
 
 }

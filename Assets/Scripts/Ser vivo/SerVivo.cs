@@ -19,4 +19,9 @@ public abstract class SerVivo : ElementoDoMapa {
         return "[" + PosI + "][" + PosJ + "]";
     }
 
+    public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
+
+    }
+
 }

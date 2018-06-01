@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public abstract class ElementoDoMapa : MonoBehaviour {
@@ -95,6 +94,22 @@ public abstract class ElementoDoMapa : MonoBehaviour {
 
     public virtual void OnMouseDown()
     {
+    }
+
+    public virtual void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
+        // Informações importantes de qualquer Elemento do Mapa
+        // isWalkable
+        // pararMovimentoDeQuemPassarPorCima
+        try
+        {
+            target.isWalkable = isWalkable;
+            target.pararMovimentoDeQuemPassarPorCima = pararMovimentoDeQuemPassarPorCima;
+        }
+        catch (Exception e)
+        {
+            print("Não copiou informações para o ElementoDoMapa. Erro: " + e);
+        }
     }
 
 }

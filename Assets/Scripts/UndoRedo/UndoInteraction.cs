@@ -4,13 +4,29 @@ using UnityEngine;
 
 public class UndoInteraction : Passo {
 
+    // temporario
+    public static int contadorInteract;
+
+    // Preciso salvar os GameObjects porque
+    // não tem como acessar o Componente
+    // de um GameObject desativado.
+    GameObject elementoQueMovimentouEmCimaGameObject;
+    GameObject elementoQueInteragiuCimaGameObject;
 
     ElementoDoMapa elementoQueMovimentouEmCima;
     ElementoDoMapa elementoQueInteragiu;
+    
 
     public UndoInteraction(ElementoDoMapa QueMovimentou, ElementoDoMapa elementoInteragiu)
     {
+        // temp
+        contadorInteract++;
+
         DefinirTipoDePasso();
+
+        elementoQueMovimentouEmCimaGameObject = QueMovimentou.gameObject;
+        elementoQueInteragiuCimaGameObject = elementoInteragiu.gameObject;
+
         ElementoQueMovimentouEmCima = QueMovimentou;
         ElementoQueInteragiu = elementoInteragiu;
     }
@@ -38,6 +54,32 @@ public class UndoInteraction : Passo {
         set
         {
             elementoQueMovimentouEmCima = value;
+        }
+    }
+
+    public GameObject ElementoQueMovimentouEmCimaGameObject
+    {
+        get
+        {
+            return elementoQueMovimentouEmCimaGameObject;
+        }
+
+        set
+        {
+            elementoQueMovimentouEmCimaGameObject = value;
+        }
+    }
+
+    public GameObject ElementoQueInteragiuCimaGameObject
+    {
+        get
+        {
+            return elementoQueInteragiuCimaGameObject;
+        }
+
+        set
+        {
+            elementoQueInteragiuCimaGameObject = value;
         }
     }
 
