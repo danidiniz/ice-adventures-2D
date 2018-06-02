@@ -15,7 +15,7 @@ public class EspecialPeixeTest : ObjetoDoMapa
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
         TipoDoElemento = MapCreator.tipoDeElemento.OBJETO;
-        Elemento = MapCreator.elementosPossiveisNoMapa.ESPECIAL_PEIXE;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ESPECIAL_PEIXE;
     }
 
     private void Awake()
@@ -29,7 +29,7 @@ public class EspecialPeixeTest : ObjetoDoMapa
 
     public override void ExecutarObjeto(ElementoDoMapa quemEstaEmCima)
     {
-        if(quemEstaEmCima.Elemento == MapCreator.elementosPossiveisNoMapa.PLAYER)
+        if(quemEstaEmCima.ElementoNoMapa == MapCreator.elementosPossiveisNoMapa.PLAYER)
         {
             Debug.Log("Comeu peixe de " + randomPoints + " points");
 
@@ -54,7 +54,7 @@ public class EspecialPeixeTest : ObjetoDoMapa
         if (MapCreator.instance.modoCriarMapaAtivado)
         {
             // Não transforma elementos do mesmo tipo
-            if (Elemento == MapCreator.instance.elementoSelecionado)
+            if (ElementoNoMapa == MapCreator.instance.elementoSelecionado)
             {
                 Debug.Log("Esse elemento já é um " + gameObject.name);
                 return;
@@ -103,14 +103,14 @@ public class EspecialPeixeTest : ObjetoDoMapa
         // para cada ElementoDoMapa.
         try
         {
-            if (elementoQuePassouPorCima.Elemento == MapCreator.elementosPossiveisNoMapa.PLAYER)
+            if (elementoQuePassouPorCima.ElementoNoMapa == MapCreator.elementosPossiveisNoMapa.PLAYER)
             {
                 Debug.Log("Retirei " + randomPoints + " points.");
             }
             
             // Reuso um Objeto desse tipo e depois coloco na posição que estava
             PoolManager.instance.ReuseObjectEmCima(
-                MapCreator.instance.RetornarElemento(Elemento), MapCreator.map[this.PosI, this.PosJ].transform.position, MapCreator.map[this.PosI, this.PosJ].transform.rotation, this.PosI, this.PosJ
+                MapCreator.instance.RetornarElemento(ElementoNoMapa), MapCreator.map[this.PosI, this.PosJ].transform.position, MapCreator.map[this.PosI, this.PosJ].transform.rotation, this.PosI, this.PosJ
                 );
 
             // Como o Reuse já colocou o Objeto em cima do Ice

@@ -22,7 +22,7 @@ public class PlayerInfo : SerVivo {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
         TipoDoElemento = MapCreator.tipoDeElemento.SER_VIVO;
-        Elemento = MapCreator.elementosPossiveisNoMapa.PLAYER;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.PLAYER;
     }
 
     public static PlayerInfo instance

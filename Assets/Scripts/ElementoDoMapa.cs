@@ -12,7 +12,7 @@ public class ElementoDoMapa : MonoBehaviour {
     protected short posJ;
 
     [SerializeField]
-    private MapCreator.elementosPossiveisNoMapa elemento;
+    private MapCreator.elementosPossiveisNoMapa elementoNoMapa;
     [SerializeField]
     private MapCreator.tipoDeElemento tipoDoElemento;
 
@@ -59,16 +59,16 @@ public class ElementoDoMapa : MonoBehaviour {
         }
     }
 
-    public MapCreator.elementosPossiveisNoMapa Elemento
+    public MapCreator.elementosPossiveisNoMapa ElementoNoMapa
     {
         get
         {
-            return elemento;
+            return elementoNoMapa;
         }
 
         set
         {
-            elemento = value;
+            elementoNoMapa = value;
         }
     }
 

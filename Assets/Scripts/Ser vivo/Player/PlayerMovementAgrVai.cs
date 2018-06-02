@@ -141,12 +141,12 @@ public class PlayerMovementAgrVai : MonoBehaviour
                 Debug.Log("Objetos que interagiram durante movimento:");
                 for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
                 {
-                    Debug.Log(UndoRedo.steps.Peek().interactions[i].HolderElementoQueSofreuInteraction.Elemento);
+                    Debug.Log(UndoRedo.steps.Peek().interactions[i].HolderElementoQueSofreuInteraction.ElementoNoMapa);
                 }
                 Debug.Log("Objetos que interagiram com player parado:");
                 for (int i = 0; i < UndoRedo.interactionsTemp.Count; i++)
                 {
-                    Debug.Log(UndoRedo.interactionsTemp[i].HolderElementoQueSofreuInteraction.Elemento);
+                    Debug.Log(UndoRedo.interactionsTemp[i].HolderElementoQueSofreuInteraction.ElementoNoMapa);
                 }
 
             }
@@ -357,7 +357,7 @@ public class PlayerMovementAgrVai : MonoBehaviour
             // Temporario
             if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce != null)
             {
-                if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.Elemento == MapCreator.elementosPossiveisNoMapa.CRATE)
+                if (MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.ElementoNoMapa == MapCreator.elementosPossiveisNoMapa.CRATE)
                 {
                     MapCreator.map[serVivoInfoComponente.PosI + direcaoI, serVivoInfoComponente.PosJ + direcaoJ].elementoEmCimaDoIce.GetComponent<IceCrate>().Quebrar(GetComponent<SerVivo>());
                     return true;

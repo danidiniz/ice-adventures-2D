@@ -9,14 +9,14 @@ public class IceStart : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.START;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.START;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
 
         return true;
@@ -33,7 +33,7 @@ public class IceStart : IcesDefault
         // Atualizo a posição do elemento
         elemento.setPosition(posI, posJ);
 
-        AlgoPassouPorAqui(elemento.Elemento, elemento);
+        AlgoPassouPorAqui(elemento.ElementoNoMapa, elemento);
 
         //GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
 

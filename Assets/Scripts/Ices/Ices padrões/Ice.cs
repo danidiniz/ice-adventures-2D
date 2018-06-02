@@ -9,7 +9,7 @@ public class Ice : IcesDefault
     {
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE;
     }
 
     public override void OnMouseDown()
@@ -25,7 +25,7 @@ public class Ice : IcesDefault
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Elemento == elementoEmCimaDoIce.Elemento)
+        if (ElementoNoMapa == elementoEmCimaDoIce.ElementoNoMapa)
             return false;
 
         /*

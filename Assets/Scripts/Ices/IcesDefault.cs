@@ -39,7 +39,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
     public virtual bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoQuePassouNoIce)
     {
         //Debug.Log(elementoEmCimaDoIce.name + "["+PosI+"]["+PosJ+"]");
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
         
         // Nem todo Ice possui interação, por isso a interface de Interação não está aqui.
@@ -75,7 +75,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
         if (MapCreator.instance.modoCriarMapaAtivado)
         {
             // Não transforma elementos do mesmo tipo
-            if (Elemento == MapCreator.instance.elementoSelecionado)
+            if (ElementoNoMapa == MapCreator.instance.elementoSelecionado)
             {
                 Debug.Log("Esse elemento já é um " + GetName());
                 return;
@@ -88,7 +88,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
             switch (MapCreator.instance.elementoSelecionado)
             {
                 case MapCreator.elementosPossiveisNoMapa.START:
-                    if(MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].Elemento == MapCreator.elementosPossiveisNoMapa.START)
+                    if(MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].ElementoNoMapa == MapCreator.elementosPossiveisNoMapa.START)
                     {
                         MapCreator.map[GameController.instance.posicaoDoStart.i, GameController.instance.posicaoDoStart.j].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE);
                     }
@@ -96,7 +96,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
                     GameController.instance.posicaoDoStart.j = PosJ;
                     break;
                 case MapCreator.elementosPossiveisNoMapa.END:
-                    if (MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].Elemento == MapCreator.elementosPossiveisNoMapa.END)
+                    if (MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].ElementoNoMapa == MapCreator.elementosPossiveisNoMapa.END)
                     {
                         MapCreator.map[GameController.instance.posicaoDoEnd.i, GameController.instance.posicaoDoEnd.j].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE);
                     }
@@ -106,7 +106,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
             }
             
             // Verificando o tipo do elemento (ICE ou OBJETO)
-            if (Elemento != MapCreator.instance.elementoSelecionado)
+            if (ElementoNoMapa != MapCreator.instance.elementoSelecionado)
             {
                 // Independente se for ICE ou OBJETO
                 // preciso retirar o que está em cima primeiro
@@ -136,7 +136,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
 
     protected string GetName()
     {
-        switch (Elemento)
+        switch (ElementoNoMapa)
         {
             case MapCreator.elementosPossiveisNoMapa.ICE:
                 return "Ice";
@@ -171,7 +171,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
 
         elemento.transform.position = transform.position;
         
-        AlgoPassouPorAqui(elemento.Elemento, elemento);
+        AlgoPassouPorAqui(elemento.ElementoNoMapa, elemento);
 
         //GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
 
@@ -190,17 +190,26 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
     {
         elementoEmCimaDoIce = null;
     }
-
+    
     public virtual void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueSofreuInteraction, Passo.tiposDeInteraction tipoDaInteraction)
     {
         UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, elementoQueSofreuInteraction, tipoDaInteraction));
     }
 
+    // Mapa editor
+    public void CriarInteraction(ElementoDoMapa elementoQueSofreuInteraction)
+    {
+        if(elementoQueSofreuInteraction.TipoDoElemento == MapCreator.tipoDeElemento.OBJETO)
+        {
+
+        }
+    }
+
     public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima)
     {
-        Debug.Log("Elemento na posicao desse ice: " + MapCreator.map[this.PosI, this.PosJ].Elemento + " | Esse elemento: " + Elemento + "[" + PosI + "][" + PosJ + "]");
+        Debug.Log("Elemento na posicao desse ice: " + MapCreator.map[this.PosI, this.PosJ].ElementoNoMapa + " | Esse elemento: " + ElementoNoMapa + "[" + PosI + "][" + PosJ + "]");
         // Fazendo o Undo, transformando o elemento atual no que ele era antes
-        MapCreator.map[this.PosI, this.PosJ].SerTransformadoEm(this.Elemento);
+        MapCreator.map[this.PosI, this.PosJ].SerTransformadoEm(this.ElementoNoMapa);
         // Copiando informações do elemento holder para o Ice que estava na posição desse
         // lembrando que esse holder é apenas um componente que está segurando
         // as informações (quando eu crio o UndoInteraction) do ice antigo, 
@@ -217,4 +226,5 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
         ((IcesDefault)target).elementoEmCimaDoIce = null;
     }
 
+    
 }

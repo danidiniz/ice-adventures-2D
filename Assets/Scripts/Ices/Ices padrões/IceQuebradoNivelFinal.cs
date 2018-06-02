@@ -9,14 +9,14 @@ public class IceQuebradoNivelFinal : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
         //base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)

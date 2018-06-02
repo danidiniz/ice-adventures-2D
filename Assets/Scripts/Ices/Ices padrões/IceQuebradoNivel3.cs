@@ -12,13 +12,13 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3;
         nivelDoIceQuebrado = 3;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoQuePassouNoIce)
     {
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
 
         switch (oQueEstaEmCima)

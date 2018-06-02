@@ -11,7 +11,7 @@ public class IceQuebradoNivel2 : IceQuebradoNivel1
 
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
         nivelDoIceQuebrado = 2;
     }
 }

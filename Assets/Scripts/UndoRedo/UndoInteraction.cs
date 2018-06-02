@@ -27,9 +27,9 @@ public class UndoInteraction : Passo {
         // Crio os ElementosDoMapa que irão segurar as informações desses elementos da interação
         // (preciso fazer isso porque se caso os elementos da interação se percam no caminho,
         //  não irá dar nullExcpetion)
-        holderElementoQueMovimentouEmCimaHolder = CriarComponenteDeAcordoComTipo(queMovimentou.Elemento);
+        holderElementoQueMovimentouEmCimaHolder = CriarComponenteDeAcordoComTipo(queMovimentou.ElementoNoMapa);
         //CriarComponenteDeAcordoComTipo(holderElementoQueMovimentouEmCimaHolder, queMovimentou.Elemento);
-        holderElementoQueSofreuInteraction = CriarComponenteDeAcordoComTipo(elementoQueSofreuInteraction.Elemento);
+        holderElementoQueSofreuInteraction = CriarComponenteDeAcordoComTipo(elementoQueSofreuInteraction.ElementoNoMapa);
         //CriarComponenteDeAcordoComTipo(holderElementoQueSofreuInteraction, elementoQueSofreuInteraction.Elemento);
         // Limpa o Holder após utilizá-lo
         MapCreator.instance.LimparHolder();

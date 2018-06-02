@@ -16,7 +16,7 @@ public class IceQuebradoNivel1 : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
         nivelDoIceQuebrado = 1;
     }
 
@@ -28,7 +28,7 @@ public class IceQuebradoNivel1 : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
         nivelDoIceQuebrado = 1;
     }
 
@@ -36,7 +36,7 @@ public class IceQuebradoNivel1 : IcesDefault
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoQuePassouNoIce);
 
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
         
         switch (oQueEstaEmCima)
@@ -80,7 +80,7 @@ public class IceQuebradoNivel1 : IcesDefault
         {
             ((IceQuebradoNivel1)target).rand = rand;
             ((IceQuebradoNivel1)target).nivelDoIceQuebrado = nivelDoIceQuebrado;
-            Debug.Log("Copiei informações do " + Elemento + " para o target " + target.Elemento);
+            Debug.Log("Copiei informações do " + ElementoNoMapa + " para o target " + target.ElementoNoMapa);
         }catch(Exception e)
         {
             Debug.Log("Não copiou informações do IceQuebradoNivel1. Erro: " + e);

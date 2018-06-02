@@ -10,7 +10,7 @@ public class IceCrateComPinguim : IceCrate, IQuebravel<SerVivo>, IEmpurravel<Ser
     void Awake()
     {
         quantidadeDePinguins = 1;
-        Elemento = MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM;
     }
 
     public override void OnMouseDown()

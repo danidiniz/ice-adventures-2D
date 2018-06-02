@@ -11,14 +11,14 @@ public class IceEnd : IcesDefault
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
-        Elemento = MapCreator.elementosPossiveisNoMapa.END;
+        ElementoNoMapa = MapCreator.elementosPossiveisNoMapa.END;
     }
 
     public override bool AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa oQueEstaEmCima, ElementoDoMapa elementoEmCimaDoIce)
     {
         base.AlgoPassouPorAqui(oQueEstaEmCima, elementoEmCimaDoIce);
 
-        if (Elemento == oQueEstaEmCima)
+        if (ElementoNoMapa == oQueEstaEmCima)
             return false;
 
         return false;
