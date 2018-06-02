@@ -24,4 +24,9 @@ public abstract class SerVivo : ElementoDoMapa {
 
     }
 
+    public override void ResetarInformacoesDoElemento()
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

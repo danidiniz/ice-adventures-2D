@@ -20,9 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4991534118833630}
   - component: {fileID: 212196122360208904}
-  - component: {fileID: 114473203816755728}
   - component: {fileID: 61281458448234052}
-  - component: {fileID: 50021179915056964}
+  - component: {fileID: 114093734927873734}
   m_Layer: 0
   m_Name: Especial peixe
   m_TagString: Untagged
@@ -43,26 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50021179915056964
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1373443518876504}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!61 &61281458448234052
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -72,7 +51,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -86,9 +65,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.99, y: 1.02}
+  m_Size: {x: 29.04, y: 16.97}
   m_EdgeRadius: 0
---- !u!114 &114473203816755728
+--- !u!114 &114093734927873734
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,19 +75,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1373443518876504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1a3985a7dd23a8438bb58a830992095, type: 3}
+  m_Script: {fileID: 11500000, guid: ee084419374af6249a2a5ac5bb35365b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWalkable: 0
+  isWalkable: 1
   pararMovimentoDeQuemPassarPorCima: 0
-  posI: 14
-  posJ: 16
+  posI: 0
+  posJ: 0
   elemento: 15
   tipoDoElemento: 1
   nameDoElemento: 
-  elementoEmCimaDoIce: {fileID: 0}
-  posicaoDoOutroBuracoI: 0
-  posicaoDoOutroBuracoJ: 0
+  isComum: 0
+  isQuebravel: 0
+  isPulavel: 0
+  isEmpurravel: 0
+  quantidadeDeVezesQuePodeSerEmpurrada: 0
 --- !u!212 &212196122360208904
 SpriteRenderer:
   m_ObjectHideFlags: 1

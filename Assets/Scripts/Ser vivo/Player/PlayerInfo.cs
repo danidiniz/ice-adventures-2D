@@ -17,6 +17,14 @@ public class PlayerInfo : SerVivo {
 
     static PlayerInfo _instance;
 
+    public PlayerInfo()
+    {
+        isWalkable = true;
+        pararMovimentoDeQuemPassarPorCima = true;
+        TipoDoElemento = MapCreator.tipoDeElemento.SER_VIVO;
+        Elemento = MapCreator.elementosPossiveisNoMapa.PLAYER;
+    }
+
     public static PlayerInfo instance
     {
         get

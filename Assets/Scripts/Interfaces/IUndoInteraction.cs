@@ -1,8 +1,6 @@
-﻿internal interface IUndoInteraction<T1, T2>
+﻿internal interface IUndoInteraction<T1, T2, T3>
 {
-    void CriarInteraction(T1 elementoQuePassouPorCima);
+    void CriarInteraction(T1 elementoQuePassouPorCima, T2 elementoQueSofreuInteraction, T3 tipoDaInteraction);
 
-    // Preciso saber o elementoQuePassouPorCima porque caso ele tenha sido afetado
-    // de alguma forma, eu faço Undo nele também.
-    void ExecutarUndoInteraction(T1 elementoQuePassouPorCima, T2 elementoQueInteragiu);
+    void ExecutarUndoInteraction(T1 elementoQueCausouInteraction);
 }

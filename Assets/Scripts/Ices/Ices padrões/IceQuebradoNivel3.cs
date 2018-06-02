@@ -6,6 +6,9 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
 {
     void Awake()
     {
+        //temp
+        rand = UnityEngine.Random.Range(0, 100);
+
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = true;
 
@@ -26,10 +29,10 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
 
                 //Debug.Log(name + " quebrado passou do nível 3 para nível final");
 
-                //Debug.Log("Game over :(");
+                Debug.Log("Game over :(");
 
                 SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL);
-                CriarInteraction(elementoQuePassouNoIce);
+                //CriarInteraction(elementoQuePassouNoIce);
                 // Game over
                 break;
 
@@ -52,10 +55,5 @@ public class IceQuebradoNivel3 : IceQuebradoNivel1
         }
 
         return true;
-    }
-
-    public override void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueInteragiu)
-    {
-        MapCreator.map[PosI, PosJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3);
     }
 }

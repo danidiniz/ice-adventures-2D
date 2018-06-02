@@ -126,7 +126,7 @@ public class PlayerMovementAgrVai : MonoBehaviour
         // deletar
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            if (UndoRedo.steps.Peek().tipoDePasso == Passo.tiposDePasso.MOVIMENTAR)
+            if (UndoRedo.steps.Peek().tipoDaInteractionQueAconteceu == Passo.tiposDeInteraction.MOVIMENTAR)
             {
                 
                 /*
@@ -138,12 +138,17 @@ public class PlayerMovementAgrVai : MonoBehaviour
             */    
 
                 
-                Debug.Log("Objetos que interagiram");
+                Debug.Log("Objetos que interagiram durante movimento:");
                 for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
                 {
-                    Debug.Log(UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
+                    Debug.Log(UndoRedo.steps.Peek().interactions[i].HolderElementoQueSofreuInteraction.Elemento);
                 }
-                
+                Debug.Log("Objetos que interagiram com player parado:");
+                for (int i = 0; i < UndoRedo.interactionsTemp.Count; i++)
+                {
+                    Debug.Log(UndoRedo.interactionsTemp[i].HolderElementoQueSofreuInteraction.Elemento);
+                }
+
             }
         }
 
@@ -175,20 +180,10 @@ public class PlayerMovementAgrVai : MonoBehaviour
                 // Coloco as interactions que ocorreram na lista de interactions desse Step
                 if(UndoRedo.interactionsTemp.Count > 0)
                 {
-                    UndoRedo.steps.Peek().interactions = new List<UndoInteraction>(UndoRedo.interactionsTemp);
+                    UndoRedo.steps.Peek().interactions = new List<UndoInteraction>(UndoRedo.interactionsTemp);              
                     UndoRedo.interactionsTemp.Clear();
-
-                    // apagar depois
-                    /*
-                    string lista = "";
-                    for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
-                    {
-                        lista += UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiuCimaGameObject.name + ", ";
-                    }
-                    Debug.Log("UndoMovimento("+UndoRedo.contador+") possui " + UndoRedo.steps.Peek().interactions.Count + " interactions:\n" + lista);
-                    */
+                   
                 }
-
             }
         }
         if (playerEmMovimento)

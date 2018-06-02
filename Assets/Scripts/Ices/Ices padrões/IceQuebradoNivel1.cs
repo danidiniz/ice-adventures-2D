@@ -1,18 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa, ElementoDoMapa>
+public class IceQuebradoNivel1 : IcesDefault
 {
-    //temp
-    int rand;
+    //temp para testar se esta funcionando o CopiarInformacoes
+    // resultado: sim, esta funcionando xD
+    public int rand;
 
     public byte nivelDoIceQuebrado;
-    
+
+    public IceQuebradoNivel1()
+    {
+        isWalkable = true;
+        pararMovimentoDeQuemPassarPorCima = false;
+
+        Elemento = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        nivelDoIceQuebrado = 1;
+    }
+
     void Awake()
     {
         //temp
-        rand = Random.Range(0, 100);
+        rand = UnityEngine.Random.Range(0, 100);
 
         isWalkable = true;
         pararMovimentoDeQuemPassarPorCima = false;
@@ -27,118 +38,35 @@ public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa, E
 
         if (Elemento == oQueEstaEmCima)
             return false;
-
+        
         switch (oQueEstaEmCima)
         {
             case MapCreator.elementosPossiveisNoMapa.PLAYER:
             case MapCreator.elementosPossiveisNoMapa.PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.URSO_POLAR:
-
-                //Debug.Log(name + " quebrado passou do nível 1 para nível 2");
-
-                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
-                CriarInteraction(elementoQuePassouNoIce);
-                break;
-
             case MapCreator.elementosPossiveisNoMapa.CRATE:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_2:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_3:
             case MapCreator.elementosPossiveisNoMapa.CRATE_COM_PINGUIM_4:
-                // Gambiarra? Pensar pra ajeitar isso
-                // problema: quando eu empurro a caixa pra cima do Ice 1, eu coloco ela em cima dele antes de transforma-lo,
-                // então ao transformá-lo em Ice 2, a caixa 'some' 
-                IceCrate temp = MapCreator.map[PosI, PosJ].elementoEmCimaDoIce.GetComponent(typeof(IceCrate)) as IceCrate;
-                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2);
-                MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = temp;
+                // Criando a Interaction desse Ice
+                CriarInteraction(elementoQuePassouNoIce, this, Passo.tiposDeInteraction.INTERACTION_ICE);
 
-                /*
-                tipoDeIceAntesDeSerTransformado = MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
+                SerTransformadoEm(RetornarElementoDeAcordoComNivelDoIce());
 
-                // Salvando posição atual desse ice para pode acessar apos transformar
-                short i = posI;
-                short j = posJ;
-
-                SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_COM_CRATE_EM_CIMA);
-
-                IceQuebradoComCrate temp2 = MapCreator.map[i, j].GetComponent(typeof(IceQuebradoComCrate)) as IceQuebradoComCrate;
-                temp2.nivelDoIceQuebrado = 2;
-                IceCrate tempCrate = elementoEmCimaDoIce.GetComponent(typeof(IceCrate)) as IceCrate;
-                temp2.IsCrateEmpurravel = tempCrate.IsCrateEmpurravel;
-                temp2.IsCratePulavel= tempCrate.IsCratePulavel;
-                temp2.IsCrateQuebravel = tempCrate.IsCrateQuebravel;
-
-                // instanciar crate aqui?
-
-                //SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.CRATE);
-
-                /*
-                // Atualizando crate nessa posicao para que ela não seja mais empurrada
-                IceCrate temp = MapCreator.map[i, j].GetComponent(typeof(IceCrate)) as IceCrate;
-                if (temp != null)
+                // Se ainda existir um Objeto em cima desse ice, passo para o Ice transformado
+                if(elementoEmCimaDoIce != null)
                 {
-                    //temp.isCrateEmpurravel = false;
+                    MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = elementoEmCimaDoIce;
                 }
-                */
-
+                
                 break;
-
             default:
                 Debug.Log("Não encontrei o elemento " + oQueEstaEmCima + " no " + name);
                 break;
         }
-
-        return true;
-    }
-
-    // Preciso saber quem passou por cima e o elemento que estava em cima. Por que?
-    // Exemplo: se o player passar por cima de um especial e ganhar 10 pontos, quando
-    //          eu der Undo, como vou retirar 10 pontos e recolocar o especial lá?
-    //          sabendo quem passou por cima (player) e o que estava em cima (especial)
-    //          consigo dentro da classe do especial (que também vai implementar o IUndoInteraction)
-    //          retirar os 10 pontos caso tenha sido um player que passou por cima.
-    public void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
-    {
-        // É através do elementoQueInteragiu (que está na classe do UndoInteraction) que vou executar o ExecutarUndoInteraction
-        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, this));
-
-
-        //temp
-        /*
-        string lista = "";
-        for (int i = 0; i < UndoRedo.interactionsTemp.Count; i++)
-        {
-            lista += UndoRedo.interactionsTemp[i].GOelementoQueInteragiu1.name + "\n";
-        }
-        Debug.Log("Criei interaction (" + UndoInteraction.contadorInteract + ") no UndoMovimento ("+UndoRedo.contador+").\nLista de Interactions do UndoMovimento ("+UndoRedo.contador+"):\n"+lista);
-        */
-
-
-        /*
-        Debug.Log("Criei interaction " + this.name + " | " + PosI + ", " + PosJ);
-        for (int i = 0; i < UndoRedo.steps.Peek().interactions.Count; i++)
-        {
-            Debug.Log("Interaction " + i + ": " + UndoRedo.steps.Peek().interactions[i].ElementoQueInteragiu.name);
-        }
-        */
-    }
-
-    public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueInteragiu)
-    {
-        Debug.Log("Executou undo do ice quebrado " + rand);
-
-        // Atualizo o mapa
-        IcesDefault temp = (IcesDefault)elementoQueInteragiu;
-        MapCreator.map[PosI, PosJ] = temp;
-        MapCreator.map[PosI, PosJ].elementoEmCimaDoIce = temp.elementoEmCimaDoIce;
-
-
-        // Desativo quem está na posição desse ice
-        MapCreator.map[PosI, PosJ].gameObject.SetActive(false);
-
-        elementoQueInteragiu.gameObject.SetActive(true);
         
-        MapCreator.map[PosI, PosJ].SerTransformadoEm(MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1);
+        return true;
     }
 
     public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
@@ -148,7 +76,79 @@ public class IceQuebradoNivel1 : IcesDefault, IUndoInteraction<ElementoDoMapa, E
         // Informações importantes de um IceQuebrado:
         // nivel
         // 
-
+        try
+        {
+            ((IceQuebradoNivel1)target).rand = rand;
+            ((IceQuebradoNivel1)target).nivelDoIceQuebrado = nivelDoIceQuebrado;
+            Debug.Log("Copiei informações do " + Elemento + " para o target " + target.Elemento);
+        }catch(Exception e)
+        {
+            Debug.Log("Não copiou informações do IceQuebradoNivel1. Erro: " + e);
+        }
     }
 
+    MapCreator.elementosPossiveisNoMapa RetornarElementoDeAcordoComNivelDoIce()
+    {
+        switch (nivelDoIceQuebrado)
+        {
+            case 1:
+                return MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_2;
+            case 2:
+                return MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_3;
+            case 3:
+                return MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL;
+            default:
+                Debug.Log("Falhou em retornar nivel do ice");
+                return MapCreator.elementosPossiveisNoMapa.ICE_QUEBRADO_1;
+        }
+    }
+    
+    /*
+    public virtual void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoAntesDoUndo)
+    {
+        // Lembrando que ESSE componente é o que está salvo na lista de Interactions
+        // então todas informações pertinentes estão aqui
+        // portanto, tenho que copiar essas informações pro próximo elemento que for usado na fila
+
+        // Fazendo o Undo, transformando o elemento atual no que ele era antes
+        MapCreator.map[elementoAntesDoUndo.PosI, elementoAntesDoUndo.PosJ].SerTransformadoEm(elementoAntesDoUndo.Elemento);
+        // Agora preciso verificar se no Dictionary de interactionsObjetos há
+        // algum objeto relacionado com esse Ice
+        if (UndoRedo.steps.Peek().interactionsObjetos.ContainsKey(GetInstanceID()))
+        {
+            // Agora ativo o Objeto, caso ele esteja desativado
+            // se ele não estiver ativado dá exception...
+            if (!UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].gameObject.activeSelf)
+            {
+                UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].gameObject.SetActive(true);
+            }
+
+
+            Debug.Log("O " + gameObject.name + " possui interactions " + UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].gameObject.name);
+
+            // Se há o objeto, vou executar o UndoInteraction dele 
+            // no caso de um especial peixe, por exemplo, ele vai retirar o especial.. por isso os objetos também tem ExecutarUndo
+            // Obs.: o elementoAntesDoUndo não serve pra nada no caso de objeto, pelo menos por enquanto
+            UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].ExecutarUndoInteraction(elementoQuePassouPorCima, elementoAntesDoUndo);
+
+            // Executo o método Reuse para colocar um objeto na fila do mesmo tipo
+            // em cima do Ice
+            GameObject g = UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].gameObject;
+            PoolManager.instance.ReuseObjectEmCima(g, g.transform.position, g.transform.rotation,
+                UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosI, UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosJ
+                );
+
+            // Agora copio as informações desse Objeto para o novo que veio da fila
+            Debug.Log("Copiando para " + UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosI + ", " + UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosJ);
+
+            UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].CopiarInformacoesDesseElementoPara(
+                MapCreator.map[UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosI, UndoRedo.steps.Peek().interactionsObjetos[GetInstanceID()].PosJ]
+                );
+
+            // Por fim, removo essa interaction da lista, já que já executei
+            //UndoRedo.steps.Peek().interactionsObjetos.Remove(GetInstanceID());
+
+        }
+    }
+    */
 }

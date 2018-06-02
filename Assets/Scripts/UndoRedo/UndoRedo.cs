@@ -32,6 +32,15 @@ public class UndoRedo : MonoBehaviour
 
     public static void ExecutarUndo()
     {
+        // Se o player estiver parado e há elementos na listaTemporaria, significa
+        // que houveram interações com o player parado
+        if (!PlayerMovementAgrVai.playerEmMovimento && (interactionsTemp.Count > 0))
+        {
+
+        }
+
+
+        // temporario
         if (contador > 0)
             contador--;
 
@@ -43,31 +52,80 @@ public class UndoRedo : MonoBehaviour
             return;
         }
         
-        //if(steps.Peek().tipoDePasso == Passo.tiposDePasso.MOVIMENTAR)
-        //{
-        UndoMovimento temp = steps.Pop() as UndoMovimento;
+        UndoMovimento temp = steps.Peek() as UndoMovimento;
 
-        Debug.Log("Executando interactions do UndoMovimento (" + temp.id + "): " + temp.interactions.Count);
+        Debug.Log("Executando interactions do UndoMovimento (" + temp.id + "): interactions " + temp.interactions.Count);
+        
 
         if (temp.interactions.Count > 0)
         {
+            // MUITO IMPORTANTE:
+            // estou tratando as interactions como ICE_INTERACTION e OJBETO_INTERACTION
+            // na ordem em que salva as interações, os ObjetosDoMapa sempre salvam primeiro por questões de Orientação a Objeto
+            // porém, quando executo o Undo de um ObjetoDoMapa, ele possivelmente irá se Reusar e vai para o Ice em que ele estava
+            // mas como o Ice em que ele estava TAMBÉM PODE ter sofrido uma interação, quer dizer que se o Undo do ObjetoDoMapa
+            // executar ANTES, o ObjetoDoMapa vai para cima do Ice que SOFREU uma interação.
+            // ENTÃO, preciso executar SEMPRE o Undo dos Ices, para depois ir recolocando (ou não) os Objetos em seus lugares.
+            // Esse passo é importante.
+            temp.interactions.Sort(OrdenarPorTipoDeInteraction);
+
+            // teste
+            /*
+            string s = "";
+            for (int i = 0; i < temp.interactions.Count; i++)
+            {
+                s += "Interaction " + i + " instanceID: " + temp.interactions[i].HolderElementoQueSofreuInteraction.Elemento + ", ";
+            }
+            Debug.Log("Lista de interactions ordenada: " + s);
+            */
+
             // Executo lista de interactions
             foreach (UndoInteraction interaction in temp.interactions)
             {
-                IUndoInteraction<ElementoDoMapa, ElementoDoMapa> obj = interaction.ElementoQueInteragiu as IUndoInteraction<ElementoDoMapa, ElementoDoMapa>;
+                IUndoInteraction<ElementoDoMapa, ElementoDoMapa, Passo.tiposDeInteraction> obj = interaction.HolderElementoQueSofreuInteraction as IUndoInteraction<ElementoDoMapa, ElementoDoMapa, Passo.tiposDeInteraction>;
                 if (obj != null)
                 {
+
+                    //Debug.Log("Executando interaction do Elemento " + interaction.HolderElementoQueSofreuInteraction.Elemento + "[" + interaction.HolderElementoQueSofreuInteraction.PosI + "][" + interaction.HolderElementoQueSofreuInteraction.PosJ + "]");
+
                     //ElementoDoMapa temp2 = interaction.ElementoQueMovimentouEmCima.GetComponent<ElementoDoMapa>();
-                    obj.ExecutarUndoInteraction(interaction.ElementoQueMovimentouEmCima, interaction.ElementoQueInteragiu);
+                    obj.ExecutarUndoInteraction(interaction.HolderElementoQueMovimentouEmCimaHolder);
+
+                    /*
+                    // Vejo se nessa interection tinha algum elemento em cima do ice
+                    int id = interaction.ElementoAntesDoUndo.gameObject.GetInstanceID();
+                    if (temp.interactionsObjetos.ContainsKey(id))
+                    {
+                        Debug.Log("1");
+                        // Simplesmente coloco esse Objeto no Ice em que ele estava
+                        // Executo o método Reuse para colocar um objeto na fila do mesmo tipo
+                        // em cima do Ice
+                        GameObject g = temp.interactionsObjetos[id].gameObject;
+                        PoolManager.instance.ReuseObjectEmCima(g, g.transform.position, g.transform.rotation,
+                            temp.interactionsObjetos[id].PosI, temp.interactionsObjetos[id].PosJ
+                            );
+                        Debug.Log("2");
+                        // Agora copio as informações desse Objeto para o novo que veio da fila
+                        temp.interactionsObjetos[id].CopiarInformacoesDesseElementoPara(
+                            MapCreator.map[temp.interactionsObjetos[id].PosI, temp.interactionsObjetos[id].PosJ]
+                            );
+                        Debug.Log("3");
+                    }
+                    */
                 }
             }
             // Limpo a lista
             temp.interactions.Clear();
         }
 
-        temp.ExecutarUndo();
+        steps.Pop();
 
-        //}
+        temp.ExecutarUndo();
+    }
+
+    static int OrdenarPorTipoDeInteraction(UndoInteraction e1, UndoInteraction e2)
+    {
+        return e1.tipoDaInteractionQueAconteceu.CompareTo(e2.tipoDaInteractionQueAconteceu);
     }
 
 }

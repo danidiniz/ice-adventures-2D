@@ -13,11 +13,12 @@ public abstract class Passo {
 
     public List<UndoInteraction> interactions;
 
-    public enum tiposDePasso
+    // Interação de Objeto sempre vem antes de Interação de Ices
+    public enum tiposDeInteraction
     {
-        MOVIMENTAR, INTERACTION
+        MOVIMENTAR, INTERACTION_ICE, INTERACTION_OBJETO
     }
-    public tiposDePasso tipoDePasso;
+    public tiposDeInteraction tipoDaInteractionQueAconteceu;
 
-    protected abstract void DefinirTipoDePasso();
+    protected abstract void DefinirTipoDePasso(tiposDeInteraction tipo);
 }

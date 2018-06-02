@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class ElementoDoMapa : MonoBehaviour {
+public class ElementoDoMapa : MonoBehaviour {
 
     public bool isWalkable;
     public bool pararMovimentoDeQuemPassarPorCima;
@@ -12,14 +12,14 @@ public abstract class ElementoDoMapa : MonoBehaviour {
     protected short posJ;
 
     [SerializeField]
-    protected MapCreator.elementosPossiveisNoMapa elemento;
+    private MapCreator.elementosPossiveisNoMapa elemento;
     [SerializeField]
-    protected MapCreator.tipoDeElemento tipoDoElemento;
+    private MapCreator.tipoDeElemento tipoDoElemento;
 
     [SerializeField]
     string nameDoElemento;
 
-#region Getters and Setters
+    #region Getters and Setters
     public short PosI
     {
         get
@@ -94,22 +94,50 @@ public abstract class ElementoDoMapa : MonoBehaviour {
 
     public virtual void OnMouseDown()
     {
+        if (MapCreator.instance.modoCriarMapaAtivado)
+        {
+            
+        }
     }
 
+    public virtual void SerTransformadoEm(MapCreator.elementosPossiveisNoMapa elemento)
+    {
+        GameObject prefabDoElemento = MapCreator.instance.RetornarElemento(elemento);
+
+        PoolManager.instance.ReuseObject(prefabDoElemento, transform.position, transform.rotation, posI, posJ);
+
+        gameObject.SetActive(false);
+    }
+
+    // Nada mais é que um Construtor
     public virtual void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
     {
-        // Informações importantes de qualquer Elemento do Mapa
-        // isWalkable
-        // pararMovimentoDeQuemPassarPorCima
         try
         {
+            // Informações importantes de qualquer Elemento do Mapa
+            // MAIS IMPORTANTE DE TODAS : POSICAO. DEMOREI MAS DESCOBRI. -.-'
+            // tipo do elemento
+            // tipo de elemento
+            // isWalkable
+            // pararMovimentoDeQuemPassarPorCima
+
+            //Debug.Log("Vai copiar elemento " + Elemento + " para target que é " + target.Elemento);
+
+            target.setPosition(posI, posJ);
+            target.TipoDoElemento = tipoDoElemento;
             target.isWalkable = isWalkable;
             target.pararMovimentoDeQuemPassarPorCima = pararMovimentoDeQuemPassarPorCima;
+
         }
         catch (Exception e)
         {
-            print("Não copiou informações para o ElementoDoMapa. Erro: " + e);
+            Debug.Log("Nao copiou ElementoDoMapa. Erro: " + e);
         }
+        
+    }
+
+    public virtual void ResetarInformacoesDoElemento()
+    {
     }
 
 }

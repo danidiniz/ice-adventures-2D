@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class IceCrateComPinguim : ObjetoDoMapa, IQuebravel<SerVivo>, IEmpurravel<SerVivo>
+public class IceCrateComPinguim : IceCrate, IQuebravel<SerVivo>, IEmpurravel<SerVivo>
 {
     public byte quantidadeDePinguins;
 
@@ -23,13 +23,13 @@ public class IceCrateComPinguim : ObjetoDoMapa, IQuebravel<SerVivo>, IEmpurravel
         }
     }
 
-    public virtual void Quebrar(SerVivo quemEstaQuebrando)
+    public override void Quebrar(SerVivo quemEstaQuebrando)
     {
 
         // Escolher direção que a foca vai
     }
 
-    public virtual void Empurrar(SerVivo quemEstaQuebrando)
+    public override void Empurrar(SerVivo quemEstaQuebrando)
     {
 
         // Escolher direção que a foca vai

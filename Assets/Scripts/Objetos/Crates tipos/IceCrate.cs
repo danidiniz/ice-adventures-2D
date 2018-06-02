@@ -1,12 +1,77 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IEmpurravel<SerVivo>, IUndoInteraction<ElementoDoMapa, ElementoDoMapa>
+public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IEmpurravel<SerVivo>
 {
-    
-    
+    public bool isComum;
+    [SerializeField]
+    protected bool isQuebravel;
+    [SerializeField]
+    protected bool isPulavel;
+    [SerializeField]
+    protected bool isEmpurravel;
+    [SerializeField]
+    protected short quantidadeDeVezesQuePodeSerEmpurrada;
+
+    #region Getters and Setters
+    public bool IsCrateQuebravel
+    {
+        get
+        {
+            return isQuebravel;
+        }
+
+        set
+        {
+            isQuebravel = value;
+        }
+    }
+
+    public bool IsCratePulavel
+    {
+        get
+        {
+            return isPulavel;
+        }
+
+        set
+        {
+            isPulavel = value;
+        }
+    }
+
+    public bool IsCrateEmpurravel
+    {
+        get
+        {
+            return isEmpurravel;
+        }
+
+        set
+        {
+            isEmpurravel = value;
+        }
+    }
+
+    public short QuantidadeDeVezesQueACratePodeSerEmpurrada
+    {
+        get
+        {
+            return quantidadeDeVezesQuePodeSerEmpurrada;
+        }
+
+        set
+        {
+            quantidadeDeVezesQuePodeSerEmpurrada = value;
+        }
+    }
+    #endregion
+
+
+
     public MapCreator.elementosPossiveisNoMapa elementoDentroDaCaixa;
 
     private void Awake()
@@ -23,6 +88,11 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
     }
 
+    public override void ExecutarObjeto(ElementoDoMapa quemEstaEmCima)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void OnMouseDown()
     {
         base.OnMouseDown();
@@ -31,10 +101,10 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         {
             return;
         }
-        
+
         if (MapCreator.instance.modoCriarMapaAtivado)
         {
-            if(MapCreator.instance.elementoSelecionado != MapCreator.elementosPossiveisNoMapa.CRATE)
+            if (MapCreator.instance.elementoSelecionado != MapCreator.elementosPossiveisNoMapa.CRATE)
             {
                 MapCreator.map[posI, posJ].elementoEmCimaDoIce.gameObject.SetActive(false);
                 MapCreator.map[posI, posJ].elementoEmCimaDoIce = null;
@@ -48,7 +118,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         {
             // Abrir opções do que o player pode fazer
             // Se clicar na mesma caixa eu simplesmente abro ou fecho o canvas
-            if(MapCreatorGUIManager.instance.crateSelecionada == this)
+            if (MapCreatorGUIManager.instance.crateSelecionada == this)
             {
                 MapCreatorGUIManager.instance.AbrirOuFecharCanvasDaCrate();
             }
@@ -58,7 +128,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
                 MapCreatorGUIManager.instance.crateSelecionada = this;
                 MapCreatorGUIManager.instance.MudarPosicaoDoCanvasDaCrateParaCrateSelecionada();
             }
-            
+
             if (PlayerInfo.instance != null)
             {
                 /*
@@ -83,7 +153,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
     public virtual void Quebrar(SerVivo quemEstaQuebrando)
     {
         // Criando a interaction
-        CriarInteraction(quemEstaQuebrando);
+        CriarInteraction(quemEstaQuebrando, this, Passo.tiposDeInteraction.INTERACTION_OBJETO);
 
 
 
@@ -97,14 +167,14 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
         if (!IsCrateQuebravel)
             return;
-        
+
         // Verificando se player está em volta da caixa
         if (((quemEstaQuebrando.PosI == posI + 1 || (quemEstaQuebrando.PosI == posI - 1)) && quemEstaQuebrando.PosJ == posJ) ||
         (((quemEstaQuebrando.PosJ == posJ + 1) || (quemEstaQuebrando.PosJ == posJ - 1)) && quemEstaQuebrando.PosI == posI))
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
-        
+
 
     }
 
@@ -118,7 +188,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
         if (!IsCratePulavel)
             return;
-        
+
         // Verificando se player está em volta da caixa
         if (((quemEstaPulando.PosI == posI + 1 || (quemEstaPulando.PosI == posI - 1)) && quemEstaPulando.PosJ == posJ) ||
         (((quemEstaPulando.PosJ == posJ + 1) || (quemEstaPulando.PosJ == posJ - 1)) && quemEstaPulando.PosI == posI))
@@ -128,7 +198,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
             short movimentaI = (short)(PosI - quemEstaPulando.PosI);
             short movimentaJ = (short)(PosJ - quemEstaPulando.PosJ);
 
-            if(MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(PosI + movimentaI), (short)(PosJ + movimentaJ)))
+            if (MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(PosI + movimentaI), (short)(PosJ + movimentaJ)))
             {
                 bool crateFoiPulada = MapCreator.map[posI + movimentaI, posJ + movimentaJ].AlgoPassouPorAqui(MapCreator.elementosPossiveisNoMapa.PLAYER, quemEstaPulando);
                 if (!crateFoiPulada)
@@ -137,7 +207,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
                 }
                 quemEstaPulando.PosI = (short)(posI + movimentaI);
                 quemEstaPulando.PosJ = (short)(posJ + movimentaJ);
-                
+
             }
         }
     }
@@ -155,7 +225,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
 
         if (!IsCrateEmpurravel)
             return;
-        
+
         // Verificando se player está em volta da caixa
         if (((quemEstaEmpurrandoInfo.PosI == posI + 1 || (quemEstaEmpurrandoInfo.PosI == posI - 1)) && quemEstaEmpurrandoInfo.PosJ == posJ) ||
         (((quemEstaEmpurrandoInfo.PosJ == posJ + 1) || (quemEstaEmpurrandoInfo.PosJ == posJ - 1)) && quemEstaEmpurrandoInfo.PosI == posI))
@@ -169,7 +239,7 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
                 if (MapCreator.instance.VerificarSeEstaDentroDoMapa((short)(posI + 1), posJ))
                 {
                     // Verifico se pra onde o Objeto vai ser empurrado está vazio
-                    if(!MapCreator.map[posI + 1, posJ].temAlgoEmCima())
+                    if (!MapCreator.map[posI + 1, posJ].temAlgoEmCima())
                     {
                         objetoFoiEmpurrado = true;
                         MapCreator.map[posI + 1, posJ].ColocarEmCimaDoIce(this);
@@ -251,14 +321,14 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
         Debug.Log(log);
     }
 
-    public void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima)
+    public override void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueSofreuInteraction, Passo.tiposDeInteraction tipoDaInteraction)
     {
-        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, this));
+        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, this, tipoDaInteraction));
     }
 
-    public void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueInteragiu)
+    public override void ExecutarUndoInteraction(ElementoDoMapa elementoQuePassouPorCima)
     {
-        this.gameObject.SetActive(true);
+        //Debug.Log(elementoQueInteragiu.name);
 
         /*
         if(UndoRedo.steps.Peek().interactions.Count > 0)
@@ -270,5 +340,29 @@ public class IceCrate : ObjetoDoMapa, IQuebravel<SerVivo>, IPulavel<SerVivo>, IE
             }
         }
         */
+    }
+
+    public override void CopiarInformacoesDesseElementoPara(ElementoDoMapa target)
+    {
+        base.CopiarInformacoesDesseElementoPara(target);
+
+        // Informações importantes de uma Crate
+        // comum? que isso? pq fiz isso? o que estou pensando?
+        // quebravel
+        // pulavel
+        // empurravel
+        // quantidade de vezes que posso empurrar
+        try
+        {
+            ((IceCrate)target).isComum = isComum;
+            ((IceCrate)target).IsCrateQuebravel = IsCrateQuebravel;
+            ((IceCrate)target).IsCratePulavel = IsCratePulavel;
+            ((IceCrate)target).IsCrateEmpurravel = IsCrateEmpurravel;
+            ((IceCrate)target).QuantidadeDeVezesQueACratePodeSerEmpurrada = QuantidadeDeVezesQueACratePodeSerEmpurrada;
+        }
+        catch (Exception e)
+        {
+            print("Não copiou informações para o IceCrate. Erro: " + e);
+        }
     }
 }

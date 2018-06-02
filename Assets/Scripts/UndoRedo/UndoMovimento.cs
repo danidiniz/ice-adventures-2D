@@ -21,7 +21,7 @@ public class UndoMovimento : Passo {
 
         interactions = new List<UndoInteraction>();
 
-        DefinirTipoDePasso();
+        DefinirTipoDePasso(tiposDeInteraction.MOVIMENTAR);
         elementoQueMovimentou = QueMovimentou;
         iceOndeComecouMovimento = ondeComecou;
         iceOndeTerminouMovimento = ondeTerminou;
@@ -70,8 +70,8 @@ public class UndoMovimento : Passo {
         */
     }
 
-    protected override void DefinirTipoDePasso()
+    protected override void DefinirTipoDePasso(tiposDeInteraction tipoDaInteraction)
     {
-        tipoDePasso = tiposDePasso.MOVIMENTAR;
+        tipoDaInteractionQueAconteceu = tipoDaInteraction;
     }
 }

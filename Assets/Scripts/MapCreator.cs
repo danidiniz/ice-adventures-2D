@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class MapCreator : MonoBehaviour {
 
+    // Teste
+    public static GameObject Holder;
+
+    public void LimparHolder()
+    {
+        ElementoDoMapa[] comps = Holder.GetComponents<ElementoDoMapa>();
+        for (int i = 0; i < comps.Length; i++)
+        {
+            Destroy(comps[i]);
+        }
+    }
+
+
     // TEMPORARIO
     public short numberOfCrates;
     private int count = 0;
@@ -48,7 +61,7 @@ public class MapCreator : MonoBehaviour {
 
     public bool modoCriarMapaAtivado;
 
-    public enum tipoDeElemento { ICE, OBJETO };
+    public enum tipoDeElemento { ICE, OBJETO, SER_VIVO };
 
     public enum elementosPossiveisNoMapa {
         // Tipos de ice
@@ -110,6 +123,10 @@ public class MapCreator : MonoBehaviour {
 
     private void Awake()
     {
+        // Elemento pra transferir um componente para outro objeto
+        Holder = new GameObject();
+
+
         // TEMPORARIO
         numberOfCrates = (short)(linhas * colunas / 3);
         mapOriginalList = new List<IcesDefault>();
@@ -125,13 +142,21 @@ public class MapCreator : MonoBehaviour {
         iceExtentsX = ice.GetComponent<Renderer>().bounds.extents.x;
         iceExtentsY = ice.GetComponent<Renderer>().bounds.extents.y;
 
-        PoolManager.instance.CreatePool(ice, linhas* colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_1, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_2, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(ice_quebrado_final_crate, linhas * colunas + 1);
-        PoolManager.instance.CreatePool(crate, linhas * colunas); // tem que ter bastante crate 
+        // Um problema aqui..
+        // O CriarInteraction tem como parametro um objeto, porém
+        // no ExecutarObjeto tem chance de eu desativar o objeto, o que
+        // implica um NullException no Criar..
+        // Para evitar isso eu criei um While no PoolManager pra procurar por GameObjects desativados
+        // e criei o dobro de GameObjects na cena,
+        // pra garantir que sempre terá objetos desativados para eu Reusar
+        PoolManager.instance.CreatePool(ice, linhas* colunas * 2);
+        PoolManager.instance.CreatePool(ice_quebrado_1, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(ice_quebrado_2, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(ice_quebrado_3, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(ice_quebrado_final, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(ice_quebrado_final_crate, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(especial_peixe, linhas * colunas * 2);
+        PoolManager.instance.CreatePool(crate, linhas * colunas * 2);
         PoolManager.instance.CreatePool(start, 2);
         PoolManager.instance.CreatePool(end, 2);
 
@@ -306,6 +331,8 @@ public class MapCreator : MonoBehaviour {
                 return ice_quebrado_final;
             case elementosPossiveisNoMapa.ICE_QUEBRADO_FINAL_CRATE:
                 return ice_quebrado_final_crate;
+            case elementosPossiveisNoMapa.ESPECIAL_PEIXE:
+                return especial_peixe;
             default:
                 Debug.Log("Class MapCreator, Function InstanciarElemento: elemento não existe");
                 return ice;
