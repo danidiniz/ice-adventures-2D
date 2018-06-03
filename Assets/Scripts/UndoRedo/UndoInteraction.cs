@@ -6,44 +6,26 @@ public class UndoInteraction : Passo {
 
     // temporario
     public static int contadorInteract;
-
-    ElementoDoMapa holderElementoQueMovimentouEmCimaHolder;
-    ElementoDoMapa holderElementoQueSofreuInteraction;
-    short posI;
-    short posJ;
     
-    public UndoInteraction(ElementoDoMapa queMovimentou, ElementoDoMapa elementoQueSofreuInteraction, Passo.tiposDeInteraction t)
+    ElementoDoMapa holderElementoQueSofreuInteraction;
+
+
+    // Map editor
+    public UndoInteraction(ElementoDoMapa elementoQueSofreuInteraction, Passo.tiposDeInteraction t)
     {
         // temp
         contadorInteract++;
 
-
-        //elementoTemporario = new ElementoDoMapa[2];
-        //elementoTemporario[0] = new ElementoDoMapa();
-        //elementoTemporario[1] = new ElementoDoMapa();
-        //QueMovimentou.CopiarInformacoesDesseElementoPara(elementoTemporario[0]);
-        //_elementoAntesDoUndo.CopiarInformacoesDesseElementoPara(elementoTemporario[1]);
-
-        // Crio os ElementosDoMapa que irão segurar as informações desses elementos da interação
-        // (preciso fazer isso porque se caso os elementos da interação se percam no caminho,
-        //  não irá dar nullExcpetion)
-        holderElementoQueMovimentouEmCimaHolder = CriarComponenteDeAcordoComTipo(queMovimentou.ElementoNoMapa);
-        //CriarComponenteDeAcordoComTipo(holderElementoQueMovimentouEmCimaHolder, queMovimentou.Elemento);
         holderElementoQueSofreuInteraction = CriarComponenteDeAcordoComTipo(elementoQueSofreuInteraction.ElementoNoMapa);
-        //CriarComponenteDeAcordoComTipo(holderElementoQueSofreuInteraction, elementoQueSofreuInteraction.Elemento);
+
         // Limpa o Holder após utilizá-lo
         MapCreator.instance.LimparHolder();
-
-        //Debug.Log("Criou holder elemento antes de Undo: " + holderElementoQueMovimentouEmCimaHolder.Elemento + " [" + holderElementoQueMovimentouEmCimaHolder.PosI + "][" + holderElementoQueMovimentouEmCimaHolder.PosJ + "] | TARGET: " + queMovimentou.Elemento);
-        //Debug.Log("Criou holder elemento antes de Undo: " + holderElementoQueSofreuInteraction.Elemento + " [" + holderElementoQueSofreuInteraction.PosI + "][" + holderElementoQueSofreuInteraction.PosJ + "] | TARGET: " + elementoQueSofreuInteraction.Elemento);
-
-        // Agora copio as informações dos elementos da interação para
-        // esses elementos holders
-        queMovimentou.CopiarInformacoesDesseElementoPara(holderElementoQueMovimentouEmCimaHolder);
+        
         elementoQueSofreuInteraction.CopiarInformacoesDesseElementoPara(holderElementoQueSofreuInteraction);
 
         DefinirTipoDePasso(t);
     }
+
 
     protected override void DefinirTipoDePasso(tiposDeInteraction tipo)
     {
@@ -71,45 +53,6 @@ public class UndoInteraction : Passo {
     }
 
     #region Getters and Setters
-    public short PosI
-    {
-        get
-        {
-            return posI;
-        }
-
-        set
-        {
-            posI = value;
-        }
-    }
-
-    public short PosJ
-    {
-        get
-        {
-            return posJ;
-        }
-
-        set
-        {
-            posJ = value;
-        }
-    }
-
-    public ElementoDoMapa HolderElementoQueMovimentouEmCimaHolder
-    {
-        get
-        {
-            return holderElementoQueMovimentouEmCimaHolder;
-        }
-
-        set
-        {
-            holderElementoQueMovimentouEmCimaHolder = value;
-        }
-    }
-
     public ElementoDoMapa HolderElementoQueSofreuInteraction
     {
         get

@@ -42,7 +42,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
         if (ElementoNoMapa == oQueEstaEmCima)
             return false;
         
-        // Nem todo Ice possui interação, por isso a interface de Interação não está aqui.
+        // Nem todo Ice possui interação
         // porém, todo Ice pode possuir um Objeto em cima (todos possuem interação),
         // então preciso verificar em todo Ice se ele possui Objeto e, se possuir,
         // crio uma interação desse objeto.
@@ -193,7 +193,7 @@ public abstract class IcesDefault : ElementoDoMapa, IColliderIce<MapCreator.elem
     
     public virtual void CriarInteraction(ElementoDoMapa elementoQuePassouPorCima, ElementoDoMapa elementoQueSofreuInteraction, Passo.tiposDeInteraction tipoDaInteraction)
     {
-        UndoRedo.interactionsTemp.Add(new UndoInteraction(elementoQuePassouPorCima, elementoQueSofreuInteraction, tipoDaInteraction));
+        UndoRedo.interactionsTemp.Add(new UndoInteractionObjeto(elementoQuePassouPorCima, elementoQueSofreuInteraction, tipoDaInteraction));
     }
 
     // Mapa editor
